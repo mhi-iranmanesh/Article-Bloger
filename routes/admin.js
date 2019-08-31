@@ -1,0 +1,66 @@
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+const Article = require('../models/article')
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+----------------------------------------update Profile-------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+router.post('/editAdmin', (req, res, next) => {
+
+    const { lastName, firstName, gender, phone } = req.body;
+
+    User.updateOne({ _id: req.user.id }, { $set: { firstName, lastName, phone, lastUpdate: Date.now(), gender } })
+        .then((result) => res.json({ success: true, result }))
+        .catch((err) => console.log(err))
+});
+
+////////////////////////////////////////////////////////updateUsers
+router.post('/editProfile', (req, res, next) => {
+
+    const { lastName, firstName, gender, phone } = req.body;
+
+    User.updateOne({ userName: req.body.userName }, { $set: { firstName, lastName, phone, lastUpdate: Date.now(), gender } })
+        .then((result) => res.json({ success: true, result }))
+        .catch((err) => console.log(err))
+});
+
+/////////////////////////////////////////////////////////Recovery Password
+router.post('/recoveryPass', (req, res, next) => {
+    const { userName } = req.body;
+    User.findOne({ userName }, { phone: 1 }, (err, userPhone) => {
+
+        if (err) return res.json({ success: false, err })
+
+        User.updateOne({ userName }, { $set: { password: userPhone.phone } })
+            .then((result) => res.json({ success: true, result }))
+            .catch((err) => res.json({ err }))
+
+    });
+});
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+---------------------------------------- ARTICLE TASK -------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+////////////////////////////////////////////////////////REMOVE ARTICLE////////////////////////////////////////////////////////
+
+router.delete('/deleteArticleUser', async (req, res, next) => {
+
+    const { _id } = req.body;
+
+    Article.deleteOne({ _id })
+        .then(res.json({ success: true, msg: 'Article deleted...' }))
+        .catch((err) => res.json({ success: false, msg: 'Article Not deleted...', err }))
+
+
+});
+
+
+module.exports = router;
