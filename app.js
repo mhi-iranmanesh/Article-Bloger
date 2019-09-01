@@ -33,7 +33,7 @@ mongoose.set('useCreateIndex', true);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-// app.use(expressLayout);
+app.use(expressLayout);
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
@@ -41,6 +41,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Bootstrap 
+app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 //express session
 app.use(session({

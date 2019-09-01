@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<% for(let i=0; i < article.length; i++ ){ %>
+<div class="d-flex flex-row-reverse articleCard bg-white mt-4 mb-2 pt-2 col-md-12 ">
+
+  <div class="articleImg col-3 p-3">
+    <img id="imgArticle" src="/images/avatarArticle/<%= article[i].picPath %>" width="200px" alt="">
+  </div>
+  <div class=" col-9 d-flex row">
+    
+    <a id="articleTitle" href="/api/general/article/<%= article[i]._id %>" style="font-size: 40px" class="col-12 text-right"><%= article[i].title %></a>
+    <label id="infoArticle" class="col-12 text-right">
+      <%= article[i].firstName +" "+ article[i].lastName %> | چهارشنبه بیست شهریور
+    </label>
+    <label id="textSummary" class="col-12 text-right"><%= article[i].text %></label>
+
+  </div>
+
+</div>
+
+<% }%>
+<div class="d-flex flex-row col-9 ">
+  <a href=""></a>
+</div>

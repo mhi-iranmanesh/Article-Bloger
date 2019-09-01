@@ -5,9 +5,13 @@ const Article = require('../models/article');
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-----------------------------------------UPDATE PROFILE-------------------------------------------------------------------------------
+----------------------------------------PROFILE-------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+////////////////////////////////////////////////////////GET INFO////////////////////////////////////////////////////////
+
+router.get('/getInfo', (req, res, next) => {res.json({ success: true, user: req.user })});
 
 ////////////////////////////////////////////////////////EDIT PROFILE////////////////////////////////////////////////////////
 
@@ -68,10 +72,10 @@ router.delete('/articleDelete', async (req, res, next) => {
     if (userName.userName === userNameArticle.userName) {
 
         Article.deleteOne({ _id })
-        .then(res.json({ success: true, msg: 'Article deleted...' }))
-        .catch((err) => res.json({ success: false, msg: 'Article Not deleted...', err }))
+            .then(res.json({ success: true, msg: 'Article deleted...' }))
+            .catch((err) => res.json({ success: false, msg: 'Article Not deleted...', err }))
 
-    }else{
+    } else {
 
         res.status(403).send('Access Denied...')
 
@@ -91,10 +95,10 @@ router.put('/articleEdit', async (req, res, next) => {
     if (userName.userName === userNameArticle.userName) {
 
         Article.updateOne({ _id }, { title, text })
-        .then(res.json({ success: true, msg: 'Article Edited...' }))
-        .catch((err) => res.json({ success: false, msg: 'Article Not Edit...', err }))
+            .then(res.json({ success: true, msg: 'Article Edited...' }))
+            .catch((err) => res.json({ success: false, msg: 'Article Not Edit...', err }))
 
-    }else{
+    } else {
 
         res.status(403).send('Access Denied...')
 
@@ -102,5 +106,45 @@ router.put('/articleEdit', async (req, res, next) => {
 
 });
 
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+----------------------------------------GET ARTICLE-------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/////////////////////////////////////////////////////// MY ARTICLE ////////////////////////////////////////////////////////
+
+router.get('/myArticle', (req, res, next) => {
+
+    Article.find({ userName: req.user.userName })
+        .then((article) => {
+
+            article.forEach(element => {
+                element.text = element.text.slice(0, 300);
+            });
+
+            res.json(article)
+
+        })
+        .catch((err) => res.json({ success: false, err }))
+
+});
+
+/////////////////////////////////////////////////////// ARTICLE ////////////////////////////////////////////////////////
+
+router.get('/article/:id', (req, res, next) => {
+
+    Article.findOne({ _id: req.param('id') })
+        .then((exist) => {
+
+            (exist) ?
+                res.json({ success: true, exist }) :
+                res.json({ success: false, msg: 'article not define...!' })
+
+        })
+        .catch((err) => res.json({ success: false, err }))
+
+});
 
 module.exports = router;

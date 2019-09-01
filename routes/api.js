@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+const Article = require('../models/article');
 
 const { isLogin } = require('../config/auth');
 const { routeController } = require('../config/ac');
 
 const user = require('./user');
 const admin = require('./admin');
-const general = require('./general')
-
+const general = require('./general');
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,8 +19,8 @@ const general = require('./general')
 
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/profile',
-        failureRedirect: '/',
+        successRedirect: '/api/allArticle/1',
+        failureRedirect: '/api/allArticle/1',
         failureFlash: true
     })(req, res, next);
 });
@@ -47,21 +47,49 @@ router.post('/register', (req, res, next) => {
                 return res.json({ success: false, msg: "user is exist!" })
             }
 
-            new User({
-                firstName,
-                lastName,
-                userName,
-                password,
-                gender,
-                phone,
-                role: "user"
-            }).save()
+            new User({ firstName, lastName, userName, password, gender, phone, role: "user" })
+                .save()
                 .then((user) => res.json({ success: true, msg: "User Adedd...", user }))
                 .catch((err) => res.json({ success: false, msg: "User Not Adedd ", err }));
         })
         .catch((err) => console.log(err))
 
 });
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+----------------------------------------Router Access Controler-------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+router.get('/allArticle/:page', (req, res, next) => {
+
+    let page = 5 * (--req.params.page)
+
+    Article.find({}, async (err, article) => {
+
+        for (let i = 0; i < article.length; i++) {
+
+            article[i].text = article[i].text.slice(0, 250) + " ...";
+            await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1, _id: 0 }, (err, user) => {
+
+                if (err) res.json({ success: false, err })
+                article[i].firstName = user.firstName;
+                article[i].lastName = user.lastName;
+
+            })
+        }
+        res.render('index', {
+            article,
+            title: 'teset'
+        }
+        )
+    })
+        .sort({ dateCreate: -1 })
+        .limit(2)
+        .skip(page);
+});
+
 
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

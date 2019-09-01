@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="https://kit.fontawesome.com/bc1633d907.js"></script>
+
+    <title><%= title %></title>
+</head>
+
+<body>
+    <div class="statusLoad col-md-10"></div>
+    <div id="clickPnl">
+        <div class="header col-md-12 text-center text-secondary">
+            <div id="infoLogin" class="col-4">
+                <i style="font-size: 25px" class="fas fa-user mr-3"></i>
+                <label id="lblName"> ورود - ثبت نام </label>
+            </div>
+        </div>
+        <div id="pnlLogin" class="panelLogin p-0">
+            <div id="formLogin">
+                <form action="/api/login" method="POST" dir="rtl" class="d-flex align-items-center flex-column">
+                    <div class="col-md-12 pb-2">
+                        <label class="text-right col-md-12" for="userName">نام کاربری</label>
+                        <input type="text" class="form-control is-valid" name="userName" id="userName"
+                            placeholder="نام کاربری" required>
+                    </div>
+
+                    <div class="col-md-12 pb-2">
+                        <label class="text-right col-md-12" for="password">رمز عبور</label>
+                        <input type="password" class="form-control is-valid" name="password" id="password"
+                            placeholder="رمز عبور" required>
+                    </div>
+
+                    <button type="submit" id="btn_submit" class="btn btn-primary mb-2 col-6">ورود</button>
+                    <a href="">عضویت در سایت</a>
+                </form>
+            </div>
+            <div id="ShowInfo" class="align-items-start flex-column text-center p-0 m-0">
+                <a class="col-md-12 bg-warning p-2" id="fullName"></a>
+                <a class="col-md-12 p-2" href="">نمایش پروفایل</a>
+                <a class="col-md-12 p-2" href="">خروج</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 p-0 m-0 d-flex row mt-3 ">
+        <div class="col-md-9">
+            <div class="main col-12 p-0"><%- body %></div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="searchPanel col-12 bg-success p-5"></div>
+        </div>
+    </div>
+
+    <script src="/javascripts/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/javascripts/layout.js"></script>
+
+</body>
+
+</html>
