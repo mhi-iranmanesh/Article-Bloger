@@ -26,8 +26,11 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logOut', (req, res, next) => {
+    let name = req.user.firstName + " " + req.user.lastName;
     req.logout();
-    res.redirect('/');
+    req.flash('success_msg', `${name} ، خدانگهدار...`)
+    res.redirect('./allArticle/1');
+
 });
 
 
@@ -81,7 +84,7 @@ router.get('/allArticle/:page', (req, res, next) => {
         }
         res.render('index', {
             article,
-            title: 'teset'
+            title: 'مقالستان'
         }
         )
     })

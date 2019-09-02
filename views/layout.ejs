@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,10 +10,12 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <script src="https://kit.fontawesome.com/bc1633d907.js"></script>
 
-    <title><%= title %></title>
+    <title></title>
+
 </head>
 
 <body>
+        
     <div class="statusLoad col-md-10"></div>
     <div id="clickPnl">
         <div class="header col-md-12 text-center text-secondary">
@@ -22,8 +25,9 @@
             </div>
         </div>
         <div id="pnlLogin" class="panelLogin p-0">
-            <div id="formLogin">
+            <div id="formLogin" class="d-flex align-items-center flex-column">
                 <form action="/api/login" method="POST" dir="rtl" class="d-flex align-items-center flex-column">
+
                     <div class="col-md-12 pb-2">
                         <label class="text-right col-md-12" for="userName">نام کاربری</label>
                         <input type="text" class="form-control is-valid" name="userName" id="userName"
@@ -37,23 +41,146 @@
                     </div>
 
                     <button type="submit" id="btn_submit" class="btn btn-primary mb-2 col-6">ورود</button>
-                    <a href="">عضویت در سایت</a>
                 </form>
+
+                <button data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-primary mb-2 col-8">عضویت
+                    در سایت</button>
+
             </div>
+
             <div id="ShowInfo" class="align-items-start flex-column text-center p-0 m-0">
                 <a class="col-md-12 bg-warning p-2" id="fullName"></a>
-                <a class="col-md-12 p-2" href="">نمایش پروفایل</a>
-                <a class="col-md-12 p-2" href="">خروج</a>
+                <a class="col-md-12 p-2" href="/api/general/profile">نمایش پروفایل</a>
+                <a class="col-md-12 p-2" href="/api/logout">خروج</a>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!--...................................................................................................................
+............................................FORM REGISTER.......................................................................
+................................................................................................................... -->
+    <!-- <form action="/newaccount" method=post
+        oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
+        <p>
+            <label for="username">E-mail address:</label>
+            <input id="username" type=email required name=un>
+            <p>
+                <label for="password1">Password:</label>
+                <input id="password1" type=password required name=up>
+                <p>
+                    <label for="password2">Confirm password:</label>
+                    <input id="password2" type=password name=up2>
+                    <p>
+                        <input type=submit value="Create account">
+    </form> -->
+
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="exampleModalCenterTitle">ثبت نام </h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <form class="needs-validation p-3" action="/api/register" method="POST" dir="rtl"
+                    oninput='confirmPassword.setCustomValidity(confirmPassword.value != passwordRe.value ? "Passwords do not match." : "")'
+                    novalidate>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="firstName" class="text-right col-12">نام</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="نام"
+                                required>
+                            <!-- <div class="valid-feedback">
+                                Looks good!
+                            </div> -->
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lastName" class="text-right col-12">نام خانوادگی</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName"
+                                placeholder="نام خانوادگی" required>
+                            <!-- <div class="valid-feedback">
+                                Looks good!
+                            </div> -->
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="userNameRe" class="text-right col-12">نام کاربری</label>
+
+                            <input type="text" class="form-control" id="userNameRe" name="userNameRe"
+                                placeholder="نام کاربری" aria-describedby="inputGroupPrepend" required>
+                            <!-- <div class="invalid-feedback">
+                                Please choose a username.
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="phone" class="text-right col-12">شماره تلفن</label>
+                            <input type="number" class="form-control" id="phone" name="phone" placeholder="شماره تلفن"
+                                required>
+                            <!-- <div class="valid-feedback">
+                                Looks good!
+                            </div> -->
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="passwordRe" class="text-right col-12">رمز عبور</label>
+                            <input type="password" class="form-control" name="passwordRe" id="passwordRe"
+                                placeholder="رمز عبور" required>
+                            <!-- <div class="valid-feedback">
+                                Looks good!
+                            </div> -->
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="confirmPassword" class="text-right col-12">تایید رمز عبور</label>
+
+                            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                                placeholder="تایید رمز عبور" aria-describedby="inputGroupPrepend" required>
+                            <!-- <div class="invalid-feedback">
+                                Please choose a username.
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="gender" value="male" name="gender" class="custom-control-input" required>
+                        <label class="custom-control-label" for="gender">مرد</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="gender2" value="woman" name="gender" class="custom-control-input" required>
+                        <label class="custom-control-label" for="gender2">زن</label>
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="button" class="btn btn-secondary"  data-dismiss="modal">انصراف</button>
+                        <button type="submit" class="btn btn-primary" id="btn_register" >ذخیره</button>
+                    </div>
+                </form>
+                <script>
+
+                </script>
             </div>
         </div>
     </div>
+
     <div class="col-md-12 p-0 m-0 d-flex row mt-3 ">
+
         <div class="col-md-9">
             <div class="main col-12 p-0"><%- body %></div>
         </div>
+
         <div class="col-md-3 ">
-            <div class="searchPanel col-12 bg-success p-5"></div>
+            <div class="searchPanel col-12 bg-success p-5"><% include ./partials/messages  %></div>
         </div>
+
     </div>
 
     <script src="/javascripts/jquery-3.4.1.js"></script>

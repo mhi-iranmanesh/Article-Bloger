@@ -26,7 +26,6 @@ $(document).ready(function () {
                 $("#formLogin").css('display', 'block')
 
             }
-
         }
     });
 
@@ -46,9 +45,54 @@ $(document).ready(function () {
             $(".panelLogin").css('display', 'none');
 
         }
-    
+
     });
 
+    /*.................................................................................................................
+      ................................................VALIDATION FORM REGISTER.....................................................
+      ..................................................................................................................*/
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
 
+    /*.................................................................................................................
+      ................................................ REGISTER FORM.....................................................
+      ..................................................................................................................*/
+
+    $('#btn_register').click(function (e) {
+    
+        let data = {
+            userName: document.getElementById("userNameRe").value,
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            password: document.getElementById("passwordRe").value,
+            phone: document.getElementById("phone").value,
+            gender: ($('#gender').prop('checked')) ? "male" : "woman"
+        }
+
+        $.ajax({
+            type: "Post",
+            url: "/api/register",
+            data,
+            success: function (response) {
+                console.log(response)
+            }
+        });
+
+    });
 
 });
