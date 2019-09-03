@@ -41,19 +41,17 @@ $(document).ready(function () {
     //Update Admin----------------------------------------------------------------------------------------------------------------------------------------------
 
     $('#update').click(function (e) {
-        e.preventDefault();
 
         let data = {
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val(),
             phone: $('#phoneUpdate').val(),
-            password: $('#password').val(),
-            idUsers
+            gender: ($('#gender').prop('checked')) ? "male" : "woman"
         }
-
+        console.log(data)
         $.ajax({
             type: "Post",
-            url: "./admin/updateInfo",
+            url: "/api/general/profileEdit",
             data,
             success: function (response) {
                 updateTable()
@@ -63,6 +61,44 @@ $(document).ready(function () {
 
         $('#update').attr('data-dismiss', 'modal');
     });
+
+    /*----------------------------------------------------------------------------------------------------------------
+    ---------------------------=>article <=-----------------------------------------------------------------------
+    ----------------------------------------------------------------------------------------------------------------*/
+
+    $('#articleInsertForm').click(function (e) {
+
+        $('#homeProfile').css('display', 'none');
+        $('#addArticle').css('display', 'block');
+
+        $('#picPath').val(guidGenerator());
+
+    });
+
+
+    // $('#articleAdd').click(async function (e) {
+        
+
+    //     let data = await {
+    //         title: $('#title').val(),
+    //         text: $('#textArticle').val(),
+    //         picPath: guidGenerator()
+    //     }
+
+    //     console.log(data)
+
+    //     $.ajax({
+    //         type: "Post",
+    //         url: "/api/general/articleAdd",
+    //         data,
+    //         dataType: "dataType",
+    //         success: function (response) {
+
+    //         }
+    //     });
+
+    // });
+
 
     /*----------------------------------------------------------------------------------------------------------------
     ---------------------------=>Users<=-----------------------------------------------------------------------
@@ -192,7 +228,7 @@ $(document).ready(function () {
         $.ajax({
 
             type: "GET",
-            url: "./admin/getAllUser",
+            url: "./api/getAllUser",
             success: function (response) {
 
                 $("#tblUsers td").remove();
@@ -254,10 +290,14 @@ $(document).ready(function () {
         });
     }
 
-    /*----------------------------------------------------------------------------------------------------------------------------------------------
-    ------------------------------------------=> SOCKET CHAT ROOM <=----------------------------------------------------------------------------------------------------
-    ----------------------------------------------------------------------------------------------------------------------------------------------*/
-    const socket = io('http://localhost:3200')
+    function guidGenerator() {
+        var S4 = function () {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        };
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    }
+
+
 
 
 });

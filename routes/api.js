@@ -89,7 +89,7 @@ router.get('/allArticle/:page', (req, res, next) => {
         )
     })
         .sort({ dateCreate: -1 })
-        .limit(2)
+        .limit(5)
         .skip(page);
 });
 

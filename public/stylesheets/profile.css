@@ -1,12 +1,12 @@
 body {
   /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
   margin: 0px;
-  background-color: #281935;
-  color: #c8a9ed;
+  background-color: #afafaf;
+  color: #303030;
 }
 
 .aMenu {
-  color: #c8a9ed !important;
+  color: #ffffff !important;
 }
 
 .aMenu:hover {
@@ -14,7 +14,7 @@ body {
 }
 
 a {
-  color: #c8a9ed;
+  color: #ffffff;
 }
 
 .divLogUp {
@@ -59,7 +59,7 @@ a {
 
 .divLogUp a:hover {
   background-color: #9575cd;
-  color: #e9e2f4;
+  color: #5900e9;
 }
 
 .header {
@@ -119,7 +119,7 @@ a {
 }
 
 .panelRight {
-  background-color: #482e5d;
+  background-color: #007194;
   height: 100%;
   position: fixed;
   right: 0;
@@ -166,20 +166,25 @@ a {
 }
 
 .panelRight-bottom a {
-  border-bottom: 0.5px solid #523d66 !important;
+  border-bottom: 0.5px solid #005881 !important;
   transition: 0.3s;
   text-align: right;
 }
 
 .panelRight-bottom a:hover {
-  background-color: #3c2d49 !important;
+  background-color: #8d4b00 !important;
 }
 
 .mainPanel {
-  background-color: #482e5d;
+  background-color: #ffffff;
   float: left;
   border-radius: 2px;
   height: 500px;
+  box-shadow: 0 0 10px 2px #464646;
+}
+
+#addArticle {
+  display: none;
 }
 
 .mainPanel2 {
@@ -189,9 +194,10 @@ a {
 }
 
 .mpinsid {
-  background-color: #482e5d;
+  background-color: #ffffff;
   border-radius: 3px;
   height: 200px;
+  box-shadow: 0 0 10px 2px #464646;
 }
 
 #tblUsers,

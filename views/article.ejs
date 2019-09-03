@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="https://kit.fontawesome.com/bc1633d907.js"></script>
+</head>
+
+<body>
+
+
+    <div class="col-md-12 mt-4 d-flex  justify-content-center">
+
+        <div class="col-md-3 bg-success">
+            <%if (Writer.isWriter){%>
+            <div class="bckPic col-md-12 d-flex flex-column align-items-center ">
+                <div class="containerImg">
+                    <img id="avatarImg" src="/images/avatar/<%= Writer.info._id %>.jpg" width="50%">
+                </div>
+                <label class="mt-2 "><%= Writer.info.firstName %> <%= Writer.info.lastName %> </label>
+                <label class="mt-2 "><%= Writer.info.phone %></label>
+            </div>
+            <button class="btn-danger" id="btn_deleteArticle">پاک کردن مقاله </button>
+            <button class="btn-warning" id="btn_editArticle">ویرایش مقاله </button>
+            <% }%>
+
+            <div class="col-12 bg-success p-2"> پربازدی ترین مقالات</div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div id="articleShow" class="col-12 bg-white ">
+                <label id="userNameWriter" style="display: block"><%= article.userName %></label>
+                <div class="articleImg col-3 p-3">
+                    <img id="imgArticl" src="/images/avatarArticle/<%= article.picPath %>" width="600px" alt="">
+                </div>
+
+                <label id="articleTitle" href="/api/general/article/<%= article._id %>" style="font-size: 40px"
+                    class="col-12 text-right"> <%= article.title %> </label>
+
+                <label id="infoArticle" class="col-12 text-right">
+                    <%= article.firstName + " " + article.lastName %> | چهارشنبه بیست شهریور
+                </label>
+                <label id="textSummary" class="col-12 text-right"><%= article.text %></label>
+
+            </div>
+
+            <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
+                method="POST" dir="rtl" novalidate>
+                <div class="col-md-10 mb-3">
+                    <label for="title" class="text-right col-12">عنوان مقاله</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
+                </div>
+
+                <div class="col-md-10 mb-3">
+                    <label class="text-right col-12" for="textArticle">متن مقاله</label>
+                    <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+                </div>
+
+                <input type="text" name="_id" value="<%= article._id %>" hidden>
+
+                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
+            </form>
+
+
+        </div>
+
+        <div class="col-md-3 bg-success">
+            <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
+        </div>
+    </div>
+
+
+    <script src="/javascripts/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/javascripts/article.js"></script>
+
+</body>
+
+</html>

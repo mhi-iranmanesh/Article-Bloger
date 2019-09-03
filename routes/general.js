@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const Article = require('../models/article');
 const upload = require('../config/upload');
+const articleImgUpload = require('../config/articleImgUpload');
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,18 +70,28 @@ router.post('/avatarUploud', upload.single('file'), (req, res, next) => {
 
 ////////////////////////////////////////////////////////ADD ARTICLE////////////////////////////////////////////////////////
 
-router.put('/articleAdd', (req, res, next) => {
+router.post('/articleAdd', articleImgUpload.single('filePath'), async (req, res, next) => {
 
     const { title, text, picPath } = req.body;
+
+    console.log(req.body);
+
 
     new Article({
         userName: req.user.userName,
         title,
         text,
-        picPath
+        picPath: picPath + ".jpg"
     }).save()
-        .then((result) => res.json({ success: true, result }))
-        .catch((err) => res.json({ success: false, err }))
+        .then((result) => {
+            req.flash('success_msg', 'مقاله شما با موفقیت ایجاد شد.')
+            res.redirect('./myArticle');
+        })
+        .catch((err) => {
+            req.flash('error_msg', 'مقاله ذخیره نشد!')
+            res.redirect('./myArticle');
+
+        })
 });
 
 ////////////////////////////////////////////////////////REMOVE ARTICLE////////////////////////////////////////////////////////
@@ -108,8 +119,10 @@ router.delete('/articleDelete', async (req, res, next) => {
 
 ////////////////////////////////////////////////////////EDIT ARTICLE////////////////////////////////////////////////////////
 
-router.put('/articleEdit', async (req, res, next) => {
+router.post('/articleEdit', async (req, res, next) => {
 
+    console.log("sdfsdfsdfsdfsdfd", req.body);
+    
     const { _id, title, text } = req.body;
 
     let userName = await User.findOne({ _id: req.user.id }, { userName: 1 })
@@ -118,7 +131,7 @@ router.put('/articleEdit', async (req, res, next) => {
     if (userName.userName === userNameArticle.userName) {
 
         Article.updateOne({ _id }, { title, text })
-            .then(res.json({ success: true, msg: 'Article Edited...' }))
+            .then(res.redirect(`./article/${_id}`))
             .catch((err) => res.json({ success: false, msg: 'Article Not Edit...', err }))
 
     } else {
@@ -141,13 +154,28 @@ router.put('/articleEdit', async (req, res, next) => {
 router.get('/myArticle', (req, res, next) => {
 
     Article.find({ userName: req.user.userName })
-        .then((article) => {
+        .then(async (article) => {
 
             article.forEach(element => {
                 element.text = element.text.slice(0, 300);
             });
 
-            res.json(article)
+            for (let i = 0; i < article.length; i++) {
+
+                article[i].text = article[i].text.slice(0, 250) + " ...";
+                await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1, _id: 0 }, (err, user) => {
+
+                    if (err) res.json({ success: false, err })
+                    article[i].firstName = user.firstName;
+                    article[i].lastName = user.lastName;
+
+                })
+            }
+
+            res.render('index', {
+                article,
+                title: ` لیست مقالات ${req.user.firstName} ${req.user.lastName} `
+            })
 
         })
         .catch((err) => res.json({ success: false, err }))
@@ -158,13 +186,29 @@ router.get('/myArticle', (req, res, next) => {
 
 router.get('/article/:id', (req, res, next) => {
 
-    Article.findOne({ _id: req.param('id') })
-        .then((exist) => {
+    Article.findOne({ _id: req.params.id })
+        .then((article) => {
 
-            (exist) ?
-                res.json({ success: true, exist }) :
-                res.json({ success: false, msg: 'article not define...!' })
+            User.findOne({ userName: article.userName }, { firstName: 1, lastName: 1, _id: 0 }, (err, user) => {
 
+                if (err) return res.json({ success: false, err })
+
+                article.firstName = user.firstName;
+                article.lastName = user.lastName;
+
+                let Writer = {};
+                
+                Writer.isWriter = (article.userName == req.user.userName) ? true : false;
+                
+                Writer.info = req.user;
+
+                    (article) ?
+                    res.render('article', {
+                        success: true, article, title: 'مقاله', layout: false, Writer
+                    }) :
+                    res.json({ success: false, msg: 'article not define...!' })
+
+            })
         })
         .catch((err) => res.json({ success: false, err }))
 
