@@ -12,10 +12,13 @@ $(document).ready(function () {
             console.log(response);
 
             $("#ShowInfo").css('display', 'none');
+            $("#formLogin").removeClass();
             $("#formLogin").css('display', 'none');
 
             if (response.success) {
+
                 $("#ShowInfo").css('display', 'flex');
+
                 document.getElementById("lblName").innerHTML =
                     response.user.firstName + " " + response.user.lastName;
                 document.getElementById("fullName").innerHTML =
@@ -74,7 +77,7 @@ $(document).ready(function () {
       ..................................................................................................................*/
 
     $('#btn_register').click(function (e) {
-    
+
         let data = {
             userName: document.getElementById("userNameRe").value,
             firstName: document.getElementById("firstName").value,

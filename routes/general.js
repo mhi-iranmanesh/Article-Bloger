@@ -4,6 +4,8 @@ const User = require('../models/user');
 const Article = require('../models/article');
 const upload = require('../config/upload');
 const articleImgUpload = require('../config/articleImgUpload');
+const CommentArt = require('../models/comments');
+const jalaliDate = require('../tools/jalaliDate');
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +124,7 @@ router.delete('/articleDelete', async (req, res, next) => {
 router.post('/articleEdit', async (req, res, next) => {
 
     console.log("sdfsdfsdfsdfsdfd", req.body);
-    
+
     const { _id, title, text } = req.body;
 
     let userName = await User.findOne({ _id: req.user.id }, { userName: 1 })
@@ -154,6 +156,7 @@ router.post('/articleEdit', async (req, res, next) => {
 router.get('/myArticle', (req, res, next) => {
 
     Article.find({ userName: req.user.userName })
+        .sort({ dateCreate: -1 })
         .then(async (article) => {
 
             article.forEach(element => {
@@ -163,7 +166,8 @@ router.get('/myArticle', (req, res, next) => {
             for (let i = 0; i < article.length; i++) {
 
                 article[i].text = article[i].text.slice(0, 250) + " ...";
-                await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1, _id: 0 }, (err, user) => {
+                await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1 }, (err, user) => {
+
 
                     if (err) res.json({ success: false, err })
                     article[i].firstName = user.firstName;
@@ -189,29 +193,86 @@ router.get('/article/:id', (req, res, next) => {
     Article.findOne({ _id: req.params.id })
         .then((article) => {
 
-            User.findOne({ userName: article.userName }, { firstName: 1, lastName: 1, _id: 0 }, (err, user) => {
+            User.findOne({ userName: article.userName }, { firstName: 1, lastName: 1 }, (err, user) => {
 
                 if (err) return res.json({ success: false, err })
 
                 article.firstName = user.firstName;
                 article.lastName = user.lastName;
+                article.idWriter = user._id;
+
+                let dt = new Date(article.dateCreate);
+
+                article.dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
 
                 let Writer = {};
-                
+
                 Writer.isWriter = (article.userName == req.user.userName) ? true : false;
-                
+
                 Writer.info = req.user;
 
-                    (article) ?
-                    res.render('article', {
-                        success: true, article, title: 'مقاله', layout: false, Writer
-                    }) :
-                    res.json({ success: false, msg: 'article not define...!' })
+                CommentArt.find({ articleId: req.params.id }, async (err, comments) => {
+
+                    for (let i = 0; i < comments.length; i++) {
+
+                        let user = await User.findOne({ _id: comments[i].userId });
+                        comments[i].fullName = user.firstName + " " + user.lastName;
+                    }
+                    return (err) ? res.json({ success: false, err }) :
+                        (article) ?
+                            res.render('article', {
+
+                                success: true, article, title: article.title, layout: false, Writer, comments
+
+                            }) :
+                            res.json({ success: false, msg: 'article not define...!' })
+
+                }).sort({ dateCreate: -1 });
+
 
             })
         })
         .catch((err) => res.json({ success: false, err }))
 
 });
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+----------------------------------------GET ARTICLE-------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+router.post('/addComment', (req, res, next) => {
+
+    const { text, articleId } = req.body;
+
+    new CommentArt({
+        text,
+        userId: req.user._id,
+        articleId
+    }).save()
+        .then((result) => {
+            res.redirect("./article/" + articleId)
+        })
+        .catch((err) => {
+            res.json({ success: false, err })
+        });
+});
+
+/////////////////////////////////////////////////////// GET COMMENT ////////////////////////////////////////////////////////
+
+router.get('/getComments', (req, res, next) => {
+
+    const { articleId } = req.body;
+
+    CommentArt.find({ articleId }, (req, res, next) => {
+
+        res.json({})
+
+    });
+
+});
+
 
 module.exports = router;

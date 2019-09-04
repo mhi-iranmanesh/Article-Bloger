@@ -25,11 +25,13 @@
                             <table class="table table-hover text-center" id="tblUsers" dir="rtl">
                                 <thead>
                                     <tr>
-                                        <td id="">نام</td>
-                                        <td id="">نام خانوادگی</td>
-                                        <td id="">شماره همراه</td>
-                                        <td id="">تاریخ عضویت</td>
-                                        <td id="">آخرین ویرایش</td>
+                                        <td>نام</td>
+                                        <td>نام خانوادگی</td>
+                                        <td>نام کاربری</td>
+                                        <td>شماره همراه</td>
+                                        <td>جنسیت</td>
+                                        <td>تاریخ عضویت</td>
+                                        <td>آخرین ویرایش</td>
                                     </tr>
                                 </thead>
                                 <tbody id="tBody"></tbody>
@@ -66,8 +68,8 @@
                             <label class="text-right col-12" for="textArticle">متن مقاله</label>
                             <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
                         </div>
-                        
-                        <input type="text" class="form-control" id="picPath"  name="picPath" required>
+
+                        <input type="text" class="form-control" id="picPath" name="picPath" hidden>
 
                         <input id="chooseImgAvatar" type="file" value="654" name="filePath" size="50" />
                         <br />
@@ -96,13 +98,15 @@
                     data-toggle="modal" data-target="#exampleModal">
                     ویرایش
                     &nbsp;<i class="fas fa-user-edit"></i> </a>
+                <a id="showFormUpdate" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
+                    href="/api/allArticle/1">
+                    صفحه مقالات
+                    &nbsp;<i class="fas fa-user-edit"></i> </a>
+                <% if(user.role == 'admin'){ %>
                 <a class="aMenu headUsers btn bg-transparent border-bottom rounded-0 col-md-12">
                     تنظیمات کاربران
                     &nbsp;<i class="fas fa-user-cog"></i> </a>
-                <a id="insertUserForm" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
-                    data-toggle="modal" data-target="#exampleModal">
-                    کاربر جدید
-                    &nbsp;<i class="fas fa-user-plus"></i> </a>
+                <%} %>
                 <a id="myArticles" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
                     href="/api/general/myArticle">
                     لیست مقالات خود
@@ -110,7 +114,7 @@
                 <a id="articleInsertForm" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12">
                     افزودن مقاله
                     &nbsp;<i class="fas fa-user-plus"></i> </a>
-                <a id="logout" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12" href="./admin/logout">
+                <a id="logout" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12" href="/api/logout">
                     خروج
                     &nbsp;<i class="fas fa-sign-out-alt"></i> </a>
             </div>
@@ -199,8 +203,8 @@
                         <div class="modal-footer justify-content-around p-2">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">لغو</button>
                             <button type="button" id="update" class="btn btn-primary">اعمال تغیرات</button>
-                            <!-- <button type="button" id="deleteUser" class="btn btn-danger">حذف</button>
-                            <button type="button" id="rcoveryPass" class="btn btn-warning">بازیابی رمز عبور</button> -->
+                            <button type="button" id="deleteUser" class="btn btn-danger">حذف</button>
+                            <button type="button" id="rcoveryPass" class="btn btn-warning">بازیابی رمز عبور</button>
                         </div>
                     </form>
                 </div>

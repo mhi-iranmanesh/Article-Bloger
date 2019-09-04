@@ -13,10 +13,54 @@
 
 <body>
 
+    <div id="clickPnl">
+        <div class="header col-md-12 text-center text-secondary row ">
+            <div id="infoLogin" class="col-4">
+                <i style="font-size: 25px" class="text-white fas fa-user mr-3"></i>
+                <label id="lblName" class="text-white"> ورود - ثبت نام </label>
+            </div>
+            <div id="" class="col-4">
+                <a href="/api/allArticle/1">صفحه مقالات</a>
+            </div>
+            <div id="" class="col-4">
+                <a href="/api/allArticle/1">صفحه اصلی</a>
+            </div>
+        </div>
+        <div id="pnlLogin" class="panelLogin p-0">
+            <div id="formLogin" class="d-flex align-items-center flex-column">
+                <form action="/api/login" method="POST" dir="rtl" class="d-flex align-items-center flex-column">
 
+                    <div class="col-md-12 pb-2">
+                        <label class="text-right col-md-12" for="userName">نام کاربری</label>
+                        <input type="text" class="form-control is-valid" name="userName" id="userName"
+                            placeholder="نام کاربری" required>
+                    </div>
+
+                    <div class="col-md-12 pb-2">
+                        <label class="text-right col-md-12" for="password">رمز عبور</label>
+                        <input type="password" class="form-control is-valid" name="password" id="password"
+                            placeholder="رمز عبور" required>
+                    </div>
+
+                    <button type="submit" id="btn_submit" class="btn btn-primary mb-2 col-6">ورود</button>
+                </form>
+
+                <button data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-primary mb-2 col-8">عضویت
+                    در سایت</button>
+
+            </div>
+
+            <div id="ShowInfo" class="align-items-start flex-column text-center p-0 m-0">
+                <a class="col-md-12 bg-warning p-2" id="fullName"></a>
+                <a class="col-md-12 p-2" href="/api/general/profile">نمایش پروفایل</a>
+                <a class="col-md-12 p-2" href="/api/logout">خروج</a>
+            </div>
+
+        </div>
+    </div>
     <div class="col-md-12 mt-4 d-flex  justify-content-center">
 
-        <div class="col-md-3 bg-success">
+        <div class="col-md-3">
             <%if (Writer.isWriter){%>
             <div class="bckPic col-md-12 d-flex flex-column align-items-center ">
                 <div class="containerImg">
@@ -35,50 +79,96 @@
 
         <div class="col-md-6">
             <div id="articleShow" class="col-12 bg-white ">
-                <label id="userNameWriter" style="display: block"><%= article.userName %></label>
+                <label id="userNameWriter" style="display: block" hidden><%= article.userName %></label>
+
+                <label id="articleTitle" href="/api/general/article/<%= article._id %>" style="font-size: 40px"
+                    class="col-12 text-right mt-5"> <%= article.title %> </label>
+
+                <hr>
+
+                <div class="d-flex justify-content-end col-12">
+                    <label id="infoArticle" class="col-12 p-3 text-right mt-2">
+                        <%= article.firstName +" "+ article.lastName %> | چهارشنبه بیست شهریور|
+                        <%= article.dateAt %>
+                    </label>
+                    <img src="/images/avatar/<%= article.idWriter %>.jpg" class="rounded-circle" width="60px"
+                        height="60px" alt="">
+                </div>
+
                 <div class="articleImg col-3 p-3">
                     <img id="imgArticl" src="/images/avatarArticle/<%= article.picPath %>" width="600px" alt="">
                 </div>
 
-                <label id="articleTitle" href="/api/general/article/<%= article._id %>" style="font-size: 40px"
-                    class="col-12 text-right"> <%= article.title %> </label>
 
-                <label id="infoArticle" class="col-12 text-right">
-                    <%= article.firstName + " " + article.lastName %> | چهارشنبه بیست شهریور
-                </label>
                 <label id="textSummary" class="col-12 text-right"><%= article.text %></label>
 
             </div>
-
-            <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
-                method="POST" dir="rtl" novalidate>
-                <div class="col-md-10 mb-3">
-                    <label for="title" class="text-right col-12">عنوان مقاله</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
-                </div>
+            <hr>
+            <form class="needs-validation p-3" id="addComment" action="/api/general/addComment" method="POST" dir="rtl"
+                novalidate>
 
                 <div class="col-md-10 mb-3">
-                    <label class="text-right col-12" for="textArticle">متن مقاله</label>
-                    <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+                    <label class="text-right col-12" for="textComment">متن نظر</label>
+                    <textarea class="form-control" id="textComment" name="text" rows="5"></textarea>
                 </div>
 
-                <input type="text" name="_id" value="<%= article._id %>" hidden>
+                <input type="text" name="articleId" value="<%= article._id %>" hidden>
 
-                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
+                <button type="submit" id="articleUpdate">ارسال نظر</button>
             </form>
 
+            <hr>
 
+            <div>
+                <label class="col-12 text-center">نظر <%= comments.length%> </label>
+                <% for(let i=0; i < comments.length; i++){ %>
+
+                <div class="col-12 d-flex row justify-content-end">
+
+                    <div class="bg-white rounded m-2 p-2 col-10 ">
+                        <label class="col-12 text-right"><%= comments[i].fullName %></label>
+                        <label class="col-12 text-right"><%= comments[i].text %></label>
+                    </div>
+
+                    <div class="containerImg">
+                        <img src="/images/avatar/<%= comments[i].userId %>.jpg" class="rounded-circle" height="50px"
+                            width="50px">
+                    </div>
+                </div>
+
+
+                <%}%>
+        </div>
+                <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit"
+                    style="display: none" method="POST" dir="rtl" novalidate>
+                    <div class="col-md-10 mb-3">
+                        <label for="title" class="text-right col-12">عنوان مقاله</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
+                    </div>
+
+                    <div class="col-md-10 mb-3">
+                        <label class="text-right col-12" for="textArticle">متن مقاله</label>
+                        <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+                    </div>
+
+                    <input type="text" name="_id" value="<%= article._id %>" hidden>
+
+                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
+                </form>
+
+
+            </div>
+
+            <div class="col-md-3 ">
+                <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
+            </div>
         </div>
 
-        <div class="col-md-3 bg-success">
-            <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
-        </div>
-    </div>
 
-
-    <script src="/javascripts/jquery-3.4.1.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/javascripts/article.js"></script>
+        <script src="/javascripts/jquery-3.4.1.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/javascripts/layout.js"></script>
+        <script src="/javascripts/article.js"></script>
 
 </body>
 

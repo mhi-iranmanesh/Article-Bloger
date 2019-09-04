@@ -1,20 +1,37 @@
 body {
   padding: 0px;
   margin: 0px;
-  background-color: #f5f5f5;
-  font-family: Iranian Sans, Tahoma;
+  background-color: #f0f0f0;
+  font-family: IRANSans, Tahoma;
   font-size: 13px;
+}
+
+#headerNew {
+  background-color: #f5f5f5;
+  margin-top: 60px;
+  z-index: 5;
+  color: #464646;
+  font-weight: 900;
+}
+
+#pnlSearch {
+  padding-top: 109px !important;
+}
+
+#formLogin2 {
+  display: none!important;
 }
 
 #articleTitle {
   color: #000000;
-  font-size:  15px !important;
+  font-size: 15px !important;
   font-weight: bold !important;
   text-decoration: none;
 }
-  #articleTitle:hover  {
-    color: #ff1515;
-  }
+
+#articleTitle:hover {
+  color: #ff1515;
+}
 
 #imgArticle {
   border-radius: 10px;
@@ -32,16 +49,14 @@ body {
 }
 
 .header {
-  background-color: #ffffff;
+  background-image: linear-gradient(to bottom right, #006492 , #0086c4);
   padding: 20px;
-  box-shadow: 0px 0px 10px 1px rgb(129, 129, 129);
+  box-shadow: 0px 0px 10px 0px #464646;
   position: fixed;
-  z-index: 1 ;
+  z-index: 2;
+  top: 0;
 }
 
-.articleCard {
-  box-shadow: 0px 0px 8px 1px rgb(196, 196, 196);
-}
 
 .statusLoad {
   height: 2px;
@@ -59,9 +74,10 @@ body {
   border-top: 1px solid #a5a5a5;
   box-shadow: 0px 0px 8px 1px rgb(196, 196, 196);
   display: none;
+  top: 75px;
 }
 
-#showInfo > a{
+#showInfo>a {
   padding: 5px;
   background-color: red;
 }

@@ -10,10 +10,10 @@ $(document).ready(function () {
         type: "GET",
         url: "/api/general/getInfo",
         success: function (response) {
-
+            // jalaliDate.gregorian_to_jalali(`${response.user.dateCreate}`.slice(0, 4), `${response.user.dateCreate}`.slice(5, 7), `${response.user.dateCreate}`.slice(7, 10));    
             document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
             document.getElementById("phone").innerHTML = `${response.user.phone}`;
-            document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
+            document.getElementById("creatAt").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
             document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
             //uploadImg -----------------------------------------------------------------------------------------------------------
 
@@ -48,7 +48,21 @@ $(document).ready(function () {
             phone: $('#phoneUpdate').val(),
             gender: ($('#gender').prop('checked')) ? "male" : "woman"
         }
-        console.log(data)
+
+        $.ajax({
+            type: "GET",
+            url: "/api/general/getInfo",
+            success: function (response) {
+    
+                alert('test');
+                document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
+                document.getElementById("phone").innerHTML = `${response.user.phone}`;
+                document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
+                document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);    
+            }
+        });
+    
+
         $.ajax({
             type: "Post",
             url: "/api/general/profileEdit",
@@ -128,9 +142,9 @@ $(document).ready(function () {
 
     $('#rcoveryPass').click(function (e) {
         $.ajax({
-            type: "put",
-            data: { idUsers },
-            url: "./admin/recoveryPass",
+            type: "POST",
+            data: { userName: idUsers },
+            url: "/api/admin/recoveryPass",
             success: function (response) {
                 console.log(response);
             }
@@ -145,8 +159,9 @@ $(document).ready(function () {
         $.ajax({
             type: 'delete',
             data: { phone: idUsers },
-            url: './admin/delUser',
+            url: '/api/admin/deleteUser',
             success: (response) => {
+                console.log("ok", response)
                 updateTable();
             }
         })
@@ -191,17 +206,16 @@ $(document).ready(function () {
     //------------------------------------------=> FUNCTION <=----------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------------------------
 
-    function handleFormUpdate(fName, lName, phone, pass, pass2) {
+    function handleFormUpdate(fName, lName, phone, userName) {
 
-        if (pass) {
-            $('#password').css('display', 'block');
-            $('#confirmPassword').css('display', 'block');
-            $('#deleteUser').css('display', 'none');
-            $('#rcoveryPass').css('display', 'none');
-            $('#insertUser').css('display', 'none');
+        if (userName) {
+            
+            $('#deleteUser').css('display', 'block');
+            $('#rcoveryPass').css('display', 'block');
+            $('#update').css('display', 'none');
 
 
-            idUsers = phone;
+            idUsers = userName;
 
             $('#firstName').val(fName)
             $('#lastName').val(lName)
@@ -228,13 +242,13 @@ $(document).ready(function () {
         $.ajax({
 
             type: "GET",
-            url: "./api/getAllUser",
+            url: "/api/admin/getAllUser",
             success: function (response) {
-
+                console.log(response)
                 $("#tblUsers td").remove();
                 $("#tblUsers th").remove();
 
-                let orderArrayHeader = ["نام", "نام خانوادگی", "شماره موبایل", "تاریخ عضویت", "آخرین آپدیت"];
+                let orderArrayHeader = ["نام", "نام خانوادگی" ,"نام کاربری" , "شماره موبایل" ,"جنسیت" , "تاریخ عضویت", "آخرین آپدیت"];
                 let thead = document.createElement('thead');
 
                 let table = document.getElementById('tblUsers');
@@ -258,11 +272,15 @@ $(document).ready(function () {
                     let cel3 = row.insertCell(2);
                     let cel4 = row.insertCell(3);
                     let cel5 = row.insertCell(4);
+                    let cel6 = row.insertCell(5);
+                    let cel7 = row.insertCell(6);
                     cel1.innerHTML = element.firstName;
                     cel2.innerHTML = element.lastName;
-                    cel3.innerHTML = element.phone;
-                    cel4.innerHTML = `${element.createAt}`.slice(0, 10);
-                    cel5.innerHTML = `${element.lastUpdate}`.slice(0, 10);
+                    cel3.innerHTML = element.userName;
+                    cel4.innerHTML = element.phone;
+                    cel5.innerHTML = element.gender;
+                    cel6.innerHTML = `${element.dateCreate}`.slice(0, 10);
+                    cel7.innerHTML = `${element.lastUpdate}`.slice(0, 10);
                     // tbody.appendChild(row)
 
                     let rows = table.getElementsByTagName("tr");
@@ -275,6 +293,7 @@ $(document).ready(function () {
                                 handleFormUpdate(
                                     row.getElementsByTagName("td")[0].innerHTML,
                                     row.getElementsByTagName("td")[1].innerHTML,
+                                    row.getElementsByTagName("td")[3].innerHTML,
                                     row.getElementsByTagName("td")[2].innerHTML)
                                 $('#showFormUpdateUsers').click();
                             };

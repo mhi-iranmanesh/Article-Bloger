@@ -1,5 +1,9 @@
+<div id="headerNew">
+    <label class="col-12 text-right p-2 text-center border-bottom">مطالب جدید</label>
+</div>
+
 <% for(let i=0; i < article.length; i++ ){ %>
-<div class="d-flex flex-row-reverse articleCard bg-white mt-4 mb-2 pt-2 col-md-12 ">
+<div class="d-flex flex-row-reverse articleCard bg-white pt-2 col-md-12 border-bottom ">
 
   <div class="articleImg col-3 p-3">
     <img id="imgArticle" src="/images/avatarArticle/<%= article[i].picPath %>" width="200px" alt="">
@@ -7,9 +11,12 @@
   <div class=" col-9 d-flex row">
     
     <a id="articleTitle" href="/api/general/article/<%= article[i]._id %>" style="font-size: 40px" class="col-12 text-right"><%= article[i].title %></a>
-    <label id="infoArticle" class="col-12 text-right">
-      <%= article[i].firstName +" "+ article[i].lastName %> | چهارشنبه بیست شهریور
-    </label>
+    <div class="d-flex justify-content-end col-12">
+        <label id="infoArticle" class="col-12 p-3 text-right">
+          <%= article[i].firstName +" "+ article[i].lastName %> | چهارشنبه بیست شهریور| <%= article[i].dateAt %>
+        </label>
+        <img src="/images/avatar/<%= article[i].idWriter %>.jpg" class="rounded-circle" width="50px" height="50px" alt="">    
+    </div>
     <label id="textSummary" class="col-12 text-right"><%= article[i].text %></label>
 
   </div>
