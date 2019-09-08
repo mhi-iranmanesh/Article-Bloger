@@ -61,7 +61,7 @@
     <div class="col-md-12 mt-4 d-flex  justify-content-center">
 
         <div class="col-md-3">
-            <%if (Writer.isWriter){%>
+            <%if (Writer.isWriter || isAdmin){%>
             <div class="bckPic col-md-12 d-flex flex-column align-items-center ">
                 <div class="containerImg">
                     <img id="avatarImg" src="/images/avatar/<%= Writer.info._id %>.jpg" width="50%">
@@ -69,10 +69,16 @@
                 <label class="mt-2 "><%= Writer.info.firstName %> <%= Writer.info.lastName %> </label>
                 <label class="mt-2 "><%= Writer.info.phone %></label>
             </div>
-            <button class="btn-danger" id="btn_deleteArticle">پاک کردن مقاله </button>
-            <button class="btn-warning" id="btn_editArticle">ویرایش مقاله </button>
-            <% }%>
+            <%if (Writer.isWriter){%>
 
+                <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
+                <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
+
+            <% }else { %>
+
+                <button class="btn" id="btn_deleteArticleByAdmin">پاک کردن مقاله </button>
+
+            <%}}%>
             <div class="col-12 bg-success p-2"> پربازدی ترین مقالات</div>
 
         </div>
@@ -103,6 +109,23 @@
                 <label id="textSummary" class="col-12 text-right"><%= article.text %></label>
 
             </div>
+            <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
+                method="POST" dir="rtl" novalidate>
+
+                <div class="col-md-10 mb-3">
+                    <label for="title" class="text-right col-12">عنوان مقاله</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
+                </div>
+
+                <div class="col-md-10 mb-3">
+                    <label class="text-right col-12" for="textArticle">متن مقاله</label>
+                    <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+                </div>
+
+                <input type="text" name="_id" value="<%= article._id %>" hidden>
+
+                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
+            </form>
             <hr>
             <form class="needs-validation p-3" id="addComment" action="/api/general/addComment" method="POST" dir="rtl"
                 novalidate>
@@ -114,7 +137,7 @@
 
                 <input type="text" name="articleId" value="<%= article._id %>" hidden>
 
-                <button type="submit" id="articleUpdate">ارسال نظر</button>
+                <button type="submit" >ارسال نظر</button>
             </form>
 
             <hr>
@@ -123,52 +146,42 @@
                 <label class="col-12 text-center">نظر <%= comments.length%> </label>
                 <% for(let i=0; i < comments.length; i++){ %>
 
-                <div class="col-12 d-flex row justify-content-end">
+                <div class="col-12 d-flex row justify-content-end ">
 
-                    <div class="bg-white rounded m-2 p-2 col-10 ">
+                    <div class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
                         <label class="col-12 text-right"><%= comments[i].fullName %></label>
-                        <label class="col-12 text-right"><%= comments[i].text %></label>
+                        <label class=" col-12 text-right"><%= comments[i].text %></label>
                     </div>
 
                     <div class="containerImg">
+
                         <img src="/images/avatar/<%= comments[i].userId %>.jpg" class="rounded-circle" height="50px"
                             width="50px">
+                        <% if(isAdmin){%>
+                        <a href="/api/admin/deleteComment<%= comments[i]._id %>" class="btn"><i
+                                class="fa fa-trash"></i></a>
+                        <%}%>
                     </div>
                 </div>
 
 
                 <%}%>
-        </div>
-                <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit"
-                    style="display: none" method="POST" dir="rtl" novalidate>
-                    <div class="col-md-10 mb-3">
-                        <label for="title" class="text-right col-12">عنوان مقاله</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
                     </div>
 
-                    <div class="col-md-10 mb-3">
-                        <label class="text-right col-12" for="textArticle">متن مقاله</label>
-                        <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
-                    </div>
-
-                    <input type="text" name="_id" value="<%= article._id %>" hidden>
-
-                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
-                </form>
 
 
+                </div>
+
+                <div class="col-md-3 ">
+                    <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
+                </div>
             </div>
 
-            <div class="col-md-3 ">
-                <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
-            </div>
-        </div>
 
-
-        <script src="/javascripts/jquery-3.4.1.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/javascripts/layout.js"></script>
-        <script src="/javascripts/article.js"></script>
+            <script src="/javascripts/jquery-3.4.1.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+            <script src="/javascripts/layout.js"></script>
+            <script src="/javascripts/article.js"></script>
 
 </body>
 

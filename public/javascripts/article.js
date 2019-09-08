@@ -11,10 +11,32 @@ $(document).ready(function () {
             url: "/api/general/articleDelete",
             success: function (response) {
 
-                if (response.success) {
+                // if (response.success) {
                     window.location.replace('/api/allArticle/1')
-                }
+                // }
                 console.log(response)
+
+                // if (response.user.userName == document.getElementById('userNameWriter').innerHTML) {
+                //     $("#btn_deleteArticle").css('display', 'block');
+                // }
+
+            }
+        });
+    });
+
+    $('#btn_deleteArticleByAdmin').click(function (e) {
+        e.preventDefault();
+        let data = { _id: window.location.pathname.slice(21, window.location.pathname.length) }
+
+        $.ajax({
+            type: "DELETE",
+            data,
+            url: "/api/admin/deleteArticleUser",
+            success: function (response) {
+
+                // if (response.success) {
+                    window.location.replace('/api/allArticle/1')
+                // }
 
                 // if (response.user.userName == document.getElementById('userNameWriter').innerHTML) {
                 //     $("#btn_deleteArticle").css('display', 'block');
@@ -31,8 +53,8 @@ $(document).ready(function () {
         $("#formUpdate").css('display', 'block');
         $("#articleShow").css('display', 'none');
 
-        $("#title").val( document.getElementById("articleTitle").innerHTML )
-        $("#textArticle").val( document.getElementById("textSummary").innerHTML )
+        $("#title").val(document.getElementById("articleTitle").innerHTML)
+        $("#textArticle").val(document.getElementById("textSummary").innerHTML)
 
     });
 

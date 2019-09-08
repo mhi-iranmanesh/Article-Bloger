@@ -211,7 +211,15 @@ router.get('/article/:id', (req, res, next) => {
 
                 Writer.info = req.user;
 
+                let isAdmin = false;
+
                 CommentArt.find({ articleId: req.params.id }, async (err, comments) => {
+
+                    let updateVisit = article.visit + 1;
+
+                    await Article.findOneAndUpdate({ _id: req.params.id }, { $set: { visit: updateVisit } })        
+
+                    if (req.user.role === 'admin') isAdmin = true;
 
                     for (let i = 0; i < comments.length; i++) {
 
@@ -222,7 +230,7 @@ router.get('/article/:id', (req, res, next) => {
                         (article) ?
                             res.render('article', {
 
-                                success: true, article, title: article.title, layout: false, Writer, comments
+                                success: true, article, title: article.title, layout: false, Writer, comments, isAdmin
 
                             }) :
                             res.json({ success: false, msg: 'article not define...!' })

@@ -43,6 +43,7 @@ router.get('/logOut', (req, res, next) => {
 
 router.post('/register', (req, res, next) => {
     const { firstName, lastName, userNameRe, passwordRe, gender, phone } = req.body;
+     
     console.log(req.body);
 
     User.findOne({ userName: userNameRe }, (err, user) => {
