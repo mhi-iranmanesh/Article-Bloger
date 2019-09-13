@@ -3,7 +3,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             next()
         } else {
-            req.flash('success_msg', 'لطفاً وارد شوید')
+            req.flash('error_msg', 'لطفاً وارد شوید')
             res.redirect('/api/allArticle/1');
         }
     }

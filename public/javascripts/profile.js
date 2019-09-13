@@ -5,15 +5,16 @@ $(document).ready(function () {
         $('#sendFile').click();
     })
 
+
     //Get Information Admin----------------------------------------------------------------------------------------------------------------------------------------------
     $.ajax({
         type: "GET",
         url: "/api/general/getInfo",
         success: function (response) {
-            // jalaliDate.gregorian_to_jalali(`${response.user.dateCreate}`.slice(0, 4), `${response.user.dateCreate}`.slice(5, 7), `${response.user.dateCreate}`.slice(7, 10));    
+            // jalaliDate.gregorian_to_jalali(`${response.user.dateCreate}`.slice(0, 4), `${response.user.dateCreate}`.slice(5, 7), `${response.user.dateCreate}`.slice(7, 10));
             document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
             document.getElementById("phone").innerHTML = `${response.user.phone}`;
-            document.getElementById("creatAt").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
+            document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
             document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
             //uploadImg -----------------------------------------------------------------------------------------------------------
 
@@ -27,33 +28,35 @@ $(document).ready(function () {
         }
     });
 
-      /*.................................................................................................................
-      ................................................VALIDATION FORM REGISTER.....................................................
-      ..................................................................................................................*/
-      $('#firstName').keypress(function (e) {
-          alert('sdfsdfsd')
-        (function () {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }());
-    });
+    /*.................................................................................................................
+    ................................................VALIDATION FORM REGISTER.....................................................
+    ..................................................................................................................*/
+    //   $('#firstName').keypress(function (e) {
+    //       alert('sdfsdfsd')
+    //     (function () {
+    //         // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    //         var forms = document.getElementsByClassName('needs-validation');
+    //         // Loop over them and prevent submission
+    //         var validation = Array.prototype.filter.call(forms, function (form) {
+    //             form.addEventListener('submit', function (event) {
+    //                 if (form.checkValidity() === false) {
+    //                     event.preventDefault();
+    //                     event.stopPropagation();
+    //                 }
+    //                 form.classList.add('was-validated');
+    //             }, false);
+    //         });
+    //     }());
+    // });
     //Show Form ----------------------------------------------------------------------------------------------------------------------------------------------
     $('#showFormUpdate').click(function (e) {
         $.ajax({
             type: "GET",
-            url: "./admin/getInfo",
+            url: "/api/general/getInfo",
             success: function (response) {
-                handleFormUpdate(response.admin.firstName, response.admin.lastName, response.admin.phone, true)
+                console.log(response);
+
+                handleFormUpdate(response.user.firstName, response.user.lastName, response.user.phone, response.user.gender)
             }
         });
     });
@@ -70,25 +73,26 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            type: "GET",
-            url: "/api/general/getInfo",
-            success: function (response) {
-    
-                alert('test');
-                document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
-                document.getElementById("phone").innerHTML = `${response.user.phone}`;
-                document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
-                document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);    
-            }
-        });
-    
-
-        $.ajax({
             type: "Post",
             url: "/api/general/profileEdit",
             data,
             success: function (response) {
                 updateTable()
+
+                showMsgBox('success', 'تغییرات با موفقیت انجام شد')
+
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/api/general/getInfo",
+            success: function (response) {
+
+                document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
+                document.getElementById("phone").innerHTML = `${response.user.phone}`;
+                document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
+                document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
             }
         });
 
@@ -111,7 +115,7 @@ $(document).ready(function () {
 
 
     // $('#articleAdd').click(async function (e) {
-        
+
 
     //     let data = await {
     //         title: $('#title').val(),
@@ -166,7 +170,7 @@ $(document).ready(function () {
             data: { userName: idUsers },
             url: "/api/admin/recoveryPass",
             success: function (response) {
-                console.log(response);
+                showMsgBox("success", `بازیابی رمز عبور ${idUsers} با موفقیت انجام شد`)
             }
         });
         $('#rcoveryPass').attr('data-dismiss', 'modal');
@@ -181,8 +185,11 @@ $(document).ready(function () {
             data: { userName: idUsers },
             url: '/api/admin/deleteUser',
             success: (response) => {
-                console.log("ok", response)
+                console.log("ok", response);
                 updateTable();
+
+                showMsgBox('success', `${idUsers} با موفقیت حذف شد.`)
+
             }
         })
         $('#deleteUser').attr('data-dismiss', 'modal');
@@ -215,7 +222,6 @@ $(document).ready(function () {
             data,
             success: function (response) {
                 updateTable();
-
             }
         });
         $('#insertUser').attr('data-dismiss', 'modal');
@@ -226,36 +232,130 @@ $(document).ready(function () {
     //------------------------------------------=> FUNCTION <=----------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------------------------
 
-    function handleFormUpdate(fName, lName, phone, userName) {
+    function handleFormUpdate(fName, lName, phone, gender, userName) {
 
         if (userName) {
-            
+
             $('#deleteUser').css('display', 'block');
             $('#rcoveryPass').css('display', 'block');
             $('#update').css('display', 'none');
 
 
             idUsers = userName;
-
-            $('#firstName').val(fName)
-            $('#lastName').val(lName)
-            $('#phoneUpdate').val(phone)
-
         } else {
 
-            $('#password').css('display', 'none');
-            $('#confirmPassword').css('display', 'none');
-            $('#deleteUser').css('display', 'block');
-            $('#rcoveryPass').css('display', 'block');
-            $('#insertUser').css('display', 'none');
+            $('#deleteUser').css('display', 'none');
+            $('#rcoveryPass').css('display', 'none');
+            $('#update').css('display', 'block');
 
             idUsers = phone;
-
-            $('#firstName').val(fName)
-            $('#lastName').val(lName)
-            $('#phoneUpdate').val(phone)
         }
+
+
+        $('#firstName').val(fName)
+        $('#lastName').val(lName)
+        $('#phoneUpdate').val(phone)
+
+        console.log(gender);
+        (gender == 'male') ? $('#gender').prop('checked', true) : $('#gender2').prop('checked', true)
     };
+
+
+    function showMsgBox(typeMsg, textMsg) {
+
+        let divMain = document.createElement('div');
+        $(divMain).addClass("alert");
+        $(divMain).addClass("fade");
+        $(divMain).addClass("show");
+        $(divMain).addClass("showMsg");
+        $(divMain).addClass("msgBox");
+
+        if (typeMsg == "success") {
+
+            $(divMain).addClass("msgSuccess");
+
+        } else if (typeMsg == "warning") {
+
+            $(divMain).addClass("msgWarning");
+
+        } else if (typeMsg == "danger") {
+
+            $(divMain).addClass("msgDanger");
+
+        }
+
+        let btnClose = document.createElement('button');
+        $(btnClose).attr("type", "button");
+        $(btnClose).attr("class", "close");
+        $(btnClose).attr("data-dismiss", "alert");
+        $(btnClose).attr("aria-label", "Close");
+
+        let iconClose = document.createElement('i');
+        $(iconClose).addClass('far fa-times-circle');
+
+        btnClose.appendChild(iconClose);
+
+        divMain.appendChild(btnClose);
+
+        let textMessage = document.createTextNode(textMsg);
+
+        divMain.appendChild(textMessage);
+
+        document.body.appendChild(divMain)
+    }
+
+
+    /*.................................................................................................................
+  ................................................MSG HANDEL.....................................................
+  ..................................................................................................................*/
+
+    function showMsgBox(typeMsg, textMsg) {
+
+        let divMain = document.createElement('div');
+        $(divMain).addClass("alert");
+        $(divMain).addClass("fade");
+        $(divMain).addClass("show");
+        $(divMain).addClass("showMsg");
+        $(divMain).addClass("msgBox");
+
+        if (typeMsg == "success") {
+
+            $(divMain).addClass("msgSuccess");
+
+        } else if (typeMsg == "warning") {
+
+            $(divMain).addClass("msgWarning");
+
+        } else if (typeMsg == "danger") {
+
+            $(divMain).addClass("msgDanger");
+
+        }
+
+        let btnClose = document.createElement('button');
+        $(btnClose).attr("type", "button");
+        $(btnClose).attr("class", "close");
+        $(btnClose).attr("data-dismiss", "alert");
+        $(btnClose).attr("aria-label", "Close");
+        $(btnClose).css("padding", "0px 10px");
+
+        let iconClose = document.createElement('i');
+        $(iconClose).addClass('far fa-times-circle');
+
+        btnClose.appendChild(iconClose);
+
+        divMain.appendChild(btnClose);
+
+        let tagTextBox = document.createElement('div')
+        let textMessage = document.createTextNode(textMsg);
+
+        tagTextBox.appendChild(textMessage)
+        $(tagTextBox).attr("dir", "rtl");
+
+        divMain.appendChild(tagTextBox);
+
+        document.body.appendChild(divMain)
+    }
 
     function updateTable() {
 
@@ -268,7 +368,7 @@ $(document).ready(function () {
                 $("#tblUsers td").remove();
                 $("#tblUsers th").remove();
 
-                let orderArrayHeader = ["نام", "نام خانوادگی" ,"نام کاربری" , "شماره موبایل" ,"جنسیت" , "تاریخ عضویت", "آخرین آپدیت"];
+                let orderArrayHeader = ["نام", "نام خانوادگی", "نام کاربری", "شماره موبایل", "جنسیت", "تاریخ عضویت", "آخرین آپدیت"];
                 let thead = document.createElement('thead');
 
                 let table = document.getElementById('tblUsers');
@@ -314,6 +414,7 @@ $(document).ready(function () {
                                     row.getElementsByTagName("td")[0].innerHTML,
                                     row.getElementsByTagName("td")[1].innerHTML,
                                     row.getElementsByTagName("td")[3].innerHTML,
+                                    row.getElementsByTagName("td")[4].innerHTML,
                                     row.getElementsByTagName("td")[2].innerHTML)
                                 $('#showFormUpdateUsers').click();
                             };
@@ -335,8 +436,5 @@ $(document).ready(function () {
         };
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
-
-
-
 
 });

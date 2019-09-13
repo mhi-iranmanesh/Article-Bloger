@@ -71,12 +71,12 @@
             </div>
             <%if (Writer.isWriter){%>
 
-                <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
-                <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
+            <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
+            <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
 
             <% }else { %>
 
-                <button class="btn" id="btn_deleteArticleByAdmin">پاک کردن مقاله </button>
+            <button class="btn" id="btn_deleteArticleByAdmin">پاک کردن مقاله </button>
 
             <%}}%>
             <div class="col-12 bg-success p-2"> پربازدی ترین مقالات</div>
@@ -87,8 +87,8 @@
             <div id="articleShow" class="col-12 bg-white ">
                 <label id="userNameWriter" style="display: block" hidden><%= article.userName %></label>
 
-                <label id="articleTitle" href="/api/general/article/<%= article._id %>" style="font-size: 40px"
-                    class="col-12 text-right mt-5"> <%= article.title %> </label>
+                <label id="articleTitle" dir="rtl" href="/api/general/article/<%= article._id %>"
+                    style="font-size: 40px" class="col-12 text-right mt-5"> <%= article.title %> </label>
 
                 <hr>
 
@@ -105,8 +105,7 @@
                     <img id="imgArticl" src="/images/avatarArticle/<%= article.picPath %>" width="600px" alt="">
                 </div>
 
-
-                <label id="textSummary" class="col-12 text-right"><%= article.text %></label>
+                <label id="textSummary" dir="rtl" class="col-12 text-right"><%= article.text %></label>
 
             </div>
             <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
@@ -137,15 +136,14 @@
 
                 <input type="text" name="articleId" value="<%= article._id %>" hidden>
 
-                <button type="submit" >ارسال نظر</button>
+                <button type="submit">ارسال نظر</button>
             </form>
 
             <hr>
 
-            <div>
-                <label class="col-12 text-center">نظر <%= comments.length%> </label>
+            <div id="boxPost">
+                <label dir="rtl" class="col-12 text-center">نظر <%= comments.length%> </label>
                 <% for(let i=0; i < comments.length; i++){ %>
-
                 <div class="col-12 d-flex row justify-content-end ">
 
                     <div class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
@@ -158,15 +156,15 @@
                         <img src="/images/avatar/<%= comments[i].userId %>.jpg" class="rounded-circle" height="50px"
                             width="50px">
                         <% if(isAdmin){%>
-                        <a href="/api/admin/deleteComment<%= comments[i]._id %>" class="btn"><i
-                                class="fa fa-trash"></i></a>
+                            <button id="<%= comments[i]._id %>" class="btnDeletePost">
+                                <i class="fa fa-trash"></i></button>
+                        <!-- <a href="/api/admin/deleteComment<%= comments[i]._id %>" class="btn"><i
+                                class="fa fa-trash"></i></a> -->
                         <%}%>
                     </div>
                 </div>
-
-
-                <%}%>
-                    </div>
+                <% } %>
+            </div>
 
 
 
@@ -174,9 +172,25 @@
 
                 <div class="col-md-3 ">
                     <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
+                    <div class="cnlTasktContainer">
+                        <div class="cnlTaskTime">
+                            <div class="cnlTaskTimeScrol"></div>
+                        </div>
+                        <i id="closeTask" class="far fa-times-circle close"></i>
+                    </div>
+
                 </div>
             </div>
 
+            <!-- <div class="pieContainer">
+                <div class="pieBackground"></div>
+                <div id="pieSlice2" class="hold">
+                    <div class="pie"></div>
+                </div>
+                <div class="innerCircle">
+                    <div class="content">10%</div>
+                </div>
+            </div> -->
 
             <script src="/javascripts/jquery-3.4.1.js"></script>
             <script src="/js/bootstrap.min.js"></script>

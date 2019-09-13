@@ -4,6 +4,7 @@ $(document).ready(function () {
     ................................................GET INFO..................................................................
     ..................................................................................................................*/
 
+
     $.ajax({
         type: "GET",
         url: "/api/general/getInfo",
@@ -72,30 +73,56 @@ $(document).ready(function () {
         }, false);
     })();
 
+
+    $("#clickTest").click(function (e) { 
+        showMsgBox('danger', "sldkjflskjflkj")
+    });
+
     /*.................................................................................................................
-      ................................................ REGISTER FORM.....................................................
+      ................................................MSG HANDEL.....................................................
       ..................................................................................................................*/
 
-    $('#btn_register').click(function (e) {
+    function showMsgBox(typeMsg, textMsg) {
 
-        let data = {
-            userName: document.getElementById("userNameRe").value,
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            password: document.getElementById("passwordRe").value,
-            phone: document.getElementById("phone").value,
-            gender: ($('#gender').prop('checked')) ? "male" : "woman"
+        let divMain = document.createElement('div');
+        $(divMain).addClass("alert");
+        $(divMain).addClass("fade");
+        $(divMain).addClass("show");
+        $(divMain).addClass("showMsg");
+        $(divMain).addClass("msgBox");
+
+        if (typeMsg == "success") {
+
+            $(divMain).addClass("msgSuccess");
+
+        } else if (typeMsg == "warning") {
+
+            $(divMain).addClass("msgWarning");            
+
+        } else if (typeMsg == "danger") {
+            
+            $(divMain).addClass("msgDanger");            
+
         }
 
-        $.ajax({
-            type: "Post",
-            url: "/api/register",
-            data,
-            success: function (response) {
-                console.log(response)
-            }
-        });
+        let btnClose = document.createElement('button');
+        $(btnClose).attr("type", "button");
+        $(btnClose).attr("class", "close");
+        $(btnClose).attr("data-dismiss", "alert");
+        $(btnClose).attr("aria-label", "Close");
 
-    });
+        let iconClose = document.createElement('i');
+        $(iconClose).addClass('far fa-times-circle');
+
+        btnClose.appendChild(iconClose);
+
+        divMain.appendChild(btnClose);
+
+        let textMessage = document.createTextNode(textMsg);
+
+        divMain.appendChild(textMessage);
+
+        document.body.appendChild(divMain)
+    }
 
 });

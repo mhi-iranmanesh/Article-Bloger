@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 //express session
-app.use(session({
+app.use( session({
   secret: 'sldkj234kfl#sldkjaDvC',
   resave: true,
   saveUninitialized: true

@@ -62,7 +62,7 @@ router.post('/register', (req, res, next) => {
 
             if (err) return res.json({ success: false, msg: "User not Adedd...", err })
 
-            req.flash('success_msg', 'کاربر با موفقیت ایجاد شد.')
+            req.flash('success_msg', 'کاربر بـــا موفقیت ایجاد شد')
             res.redirect('/api/allArticle/1')
 
         })

@@ -1,0 +1,32 @@
+.msgBox {
+    position: fixed;
+    z-index: 4;
+    bottom: 25px;
+    left: 50px;
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0px;
+    padding: 20px 5px !important;
+}
+
+.msgSuccess {
+    color: green;
+    background-color: rgba(235, 235, 235, 0.753);
+    border-right: 10px solid green;
+    box-shadow: 0 0 5px 0.5px #8b8b8b;
+}
+
+.msgDanger {
+    color: rgba(182, 185, 0);
+    background-color: rgba(235, 235, 235, 0.753);
+    border-right: 10px solid rgb(224, 209, 0);
+    box-shadow: 0 0 5px 0.5px #8b8b8b;
+}
+
+.msgWarning {
+    color: rgb(128, 0, 0);
+    background-color: rgba(235, 235, 235, 0.753);
+    border-right: 10px solid rgb(128, 0, 0);
+    box-shadow: 0 0 5px 0.5px #8b8b8b;
+}
