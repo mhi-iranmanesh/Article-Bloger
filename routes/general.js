@@ -28,7 +28,16 @@ router.get('/profile', (req, res, next) => {
 
 ////////////////////////////////////////////////////////GET INFO////////////////////////////////////////////////////////
 
-router.get('/getInfo', (req, res, next) => { res.json({ success: true, user: req.user }) });
+router.get('/getInfo', (req, res, next) => { 
+
+    let dt = new Date(req.user.dateCreate);
+    req.user.dateCreate = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
+
+    dt = new Date(req.user.lastUpdate);
+    req.user.lastUpdate = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
+
+    res.json({ success: true, user: req.user }) 
+});
 
 ////////////////////////////////////////////////////////EDIT PROFILE////////////////////////////////////////////////////////
 
@@ -154,7 +163,7 @@ router.post('/articleEdit', async (req, res, next) => {
 /////////////////////////////////////////////////////// MY ARTICLE ////////////////////////////////////////////////////////
 
 router.get('/myArticle', (req, res, next) => {
-
+    let numberArticl;
     Article.find({ userName: req.user.userName })
         .sort({ dateCreate: -1 })
         .then(async (article) => {
@@ -175,9 +184,10 @@ router.get('/myArticle', (req, res, next) => {
 
                 })
             }
-
+            numberArticl = await Article.find({}).count();
             res.render('index', {
                 article,
+                numberArticl,
                 title: ` لیست مقالات ${req.user.firstName} ${req.user.lastName} `
             })
 
@@ -200,10 +210,11 @@ router.get('/article/:id', (req, res, next) => {
                 article.firstName = user.firstName;
                 article.lastName = user.lastName;
                 article.idWriter = user._id;
-
+                
                 let dt = new Date(article.dateCreate);
-
-                article.dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
+                
+                article.dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
+                article.datePersian = jalaliDate.persianDateLong(dt.getFullYear(), dt.getMonth() + 1, dt.getDate(), dt.getDay() );
 
                 let Writer = {};
 
@@ -217,7 +228,7 @@ router.get('/article/:id', (req, res, next) => {
 
                     let updateVisit = article.visit + 1;
 
-                    await Article.findOneAndUpdate({ _id: req.params.id }, { $set: { visit: updateVisit } })        
+                    await Article.findOneAndUpdate({ _id: req.params.id }, { $set: { visit: updateVisit } })
 
                     if (req.user.role === 'admin') isAdmin = true;
 
@@ -245,9 +256,42 @@ router.get('/article/:id', (req, res, next) => {
 });
 
 
+/////////////////////////////////////////////////////// MOST VIEWED ////////////////////////////////////////////////////////
+
+router.get('/articleMostViewed', (req, res, next) => {
+
+    Article.find({}, { picPath: 1, title: 1 }, (err, article) => {
+        if (err) return res.json({ success: false, msg: 'test', err })
+        res.json({ success: true, article })
+    })
+        .sort({ visit: -1 })
+        .limit(4)
+
+});
+
+/////////////////////////////////////////////////////// WRITER ARTICLE ////////////////////////////////////////////////////////
+
+router.get('/articlesWriter', (req, res, next) => {
+
+    // const { userName } = req.body;
+    // console.log( userName )
+
+    article.find( {}, (err, article) => {
+        if(err) res.json({success: false, msg: "err", err})
+        res.json({ success: true, article })
+    });
+    // article.find({ }, { picPath: 1, title: 1 }, (err, article) => {
+    //     if (err) return res.json({ success: false, err })
+    //     res.json({ success: true, article })
+    // })
+    //     .sort({ dateCreate: -1 })
+    //     .limit(4);
+
+});
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-----------------------------------------GET ARTICLE-------------------------------------------------------------------------------
+---------------------------------------- COMMENT -------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -261,7 +305,11 @@ router.post('/addComment', (req, res, next) => {
         articleId
     }).save()
         .then((result) => {
+
+            req.flash('success_msg', 'نظر شما با موفقیت ثبت گردید.')
+
             res.redirect("./article/" + articleId)
+
         })
         .catch((err) => {
             res.json({ success: false, err })

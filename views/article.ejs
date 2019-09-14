@@ -8,25 +8,25 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/msgBox.css" />
     <script src="https://kit.fontawesome.com/bc1633d907.js"></script>
 </head>
 
 <body>
+    <% include ./partials/messages  %>
 
-    <div id="clickPnl">
-        <div class="header col-md-12 text-center text-secondary row ">
-            <div id="infoLogin" class="col-4">
-                <i style="font-size: 25px" class="text-white fas fa-user mr-3"></i>
-                <label id="lblName" class="text-white"> ورود - ثبت نام </label>
-            </div>
-            <div id="" class="col-4">
-                <a href="/api/allArticle/1">صفحه مقالات</a>
-            </div>
-            <div id="" class="col-4">
-                <a href="/api/allArticle/1">صفحه اصلی</a>
-            </div>
-        </div>
-        <div id="pnlLogin" class="panelLogin p-0">
+    <div class="header mx-auto text-secondary row d-flex justify-content-around ">
+        <a href="/api/allArticle/1">
+            <i class="fas fa-address-card text-white"></i>
+        </a>
+        <a href="/api/allArticle/1">
+            <i class="fas fa-file text-white"></i>
+        </a>
+        <a href="/api/logout">
+            <i class="fas fa-sign-out-alt text-white"></i>
+        </a>
+    </div>
+    <!-- <div id="pnlLogin" class="panelLogin p-0">
             <div id="formLogin" class="d-flex align-items-center flex-column">
                 <form action="/api/login" method="POST" dir="rtl" class="d-flex align-items-center flex-column">
 
@@ -55,134 +55,141 @@
                 <a class="col-md-12 p-2" href="/api/general/profile">نمایش پروفایل</a>
                 <a class="col-md-12 p-2" href="/api/logout">خروج</a>
             </div>
+        </div> -->
 
-        </div>
-    </div>
-    <div class="col-md-12 mt-4 d-flex  justify-content-center">
-
-        <div class="col-md-3">
+    <div class="col-md-12 d-flex  justify-content-center">
+        <div class="col-md-3 mt-3">
             <%if (Writer.isWriter || isAdmin){%>
             <div class="bckPic col-md-12 d-flex flex-column align-items-center ">
-                <div class="containerImg">
-                    <img id="avatarImg" src="/images/avatar/<%= Writer.info._id %>.jpg" width="50%">
-                </div>
+                <!-- <div class="containerImg"> -->
+                <img class="border-circle" src="/images/avatar/<%= Writer.info._id %>.jpg" width="50%">
+                <!-- </div> -->
                 <label class="mt-2 "><%= Writer.info.firstName %> <%= Writer.info.lastName %> </label>
-                <label class="mt-2 "><%= Writer.info.phone %></label>
+                <!-- <label class="mt-2 "><%= Writer.info.phone %></label> -->
+
+                <%if (Writer.isWriter){%>
+
+                <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
+                <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
+
+                <% }else { %>
+
+                <button class="btn" id="btn_deleteArticleByAdmin">پاک کردن مقاله&nbsp;
+                    <i style="font-size: 20px; color:rgb(187, 0, 0)" class="fas fa-backspace"></i></button>
+
+                <%} %>
             </div>
-            <%if (Writer.isWriter){%>
+            <%}%>
+            
+            <div class="col-12 p-2 titrPnl">پر بازدید ترین مقالات
+                <i class="fas fa-sort-amount-up-alt"></i>
+            </div>
+            <div id="listMostVisit" dir="rtl" class="col-12 p-0 ">
 
-            <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
-            <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
-
-            <% }else { %>
-
-            <button class="btn" id="btn_deleteArticleByAdmin">پاک کردن مقاله </button>
-
-            <%}}%>
-            <div class="col-12 bg-success p-2"> پربازدی ترین مقالات</div>
-
+            </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 mt-3">
             <div id="articleShow" class="col-12 bg-white ">
                 <label id="userNameWriter" style="display: block" hidden><%= article.userName %></label>
 
-                <label id="articleTitle" dir="rtl" href="/api/general/article/<%= article._id %>"
-                    style="font-size: 40px" class="col-12 text-right mt-5"> <%= article.title %> </label>
+            <label id="articleTitle" dir="rtl" href="/api/general/article/<%= article._id %>" style="font-size: 40px"
+                class="col-12 text-right mt-5"> <%= article.title %> </label>
 
-                <hr>
+            <hr>
 
-                <div class="d-flex justify-content-end col-12">
-                    <label id="infoArticle" class="col-12 p-3 text-right mt-2">
-                        <%= article.firstName +" "+ article.lastName %> | چهارشنبه بیست شهریور|
-                        <%= article.dateAt %>
-                    </label>
-                    <img src="/images/avatar/<%= article.idWriter %>.jpg" class="rounded-circle" width="60px"
-                        height="60px" alt="">
-                </div>
-
-                <div class="articleImg col-3 p-3">
-                    <img id="imgArticl" src="/images/avatarArticle/<%= article.picPath %>" width="600px" alt="">
-                </div>
-
-                <label id="textSummary" dir="rtl" class="col-12 text-right"><%= article.text %></label>
-
+            <div class="d-flex justify-content-end col-12">
+                <label id="infoArticle" class="col-12 p-3 text-right mt-2">
+                    <%= article.firstName +" "+ article.lastName %> | <%= article.datePersian %>
+                </label>
+                <img src="/images/avatar/<%= article.idWriter %>.jpg" class="rounded-circle" width="60px" height="60px"
+                    alt="">
             </div>
-            <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
-                method="POST" dir="rtl" novalidate>
 
-                <div class="col-md-10 mb-3">
-                    <label for="title" class="text-right col-12">عنوان مقاله</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
-                </div>
+            <div class="articleImg col-12 p-3">
+                <img id="imgArticl" class="col-12" src="/images/avatarArticle/<%= article.picPath %>" alt="">
+            </div>
 
-                <div class="col-md-10 mb-3">
-                    <label class="text-right col-12" for="textArticle">متن مقاله</label>
-                    <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
-                </div>
+            <label id="textSummary" dir="rtl" class="col-12 text-right"><%= article.text %></label>
 
-                <input type="text" name="_id" value="<%= article._id %>" hidden>
+        </div>
+        <form class="needs-validation p-3" id="formUpdate" action="/api/general/articleEdit" style="display: none"
+            method="POST" dir="rtl" novalidate>
 
-                <button type="submit" id="articleUpdate">ویرایش مقاله</button>
-            </form>
-            <hr>
-            <form class="needs-validation p-3" id="addComment" action="/api/general/addComment" method="POST" dir="rtl"
-                novalidate>
+            <div class="col-md-10 mb-3">
+                <label for="title" class="text-right col-12">عنوان مقاله</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="عنوان" required>
+            </div>
 
-                <div class="col-md-10 mb-3">
-                    <label class="text-right col-12" for="textComment">متن نظر</label>
-                    <textarea class="form-control" id="textComment" name="text" rows="5"></textarea>
-                </div>
+            <div class="col-md-10 mb-3">
+                <label class="text-right col-12" for="textArticle">متن مقاله</label>
+                <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+            </div>
 
-                <input type="text" name="articleId" value="<%= article._id %>" hidden>
+            <input type="text" name="_id" value="<%= article._id %>" hidden>
 
-                <button type="submit">ارسال نظر</button>
-            </form>
+            <button type="submit" id="articleUpdate">ویرایش مقاله</button>
+        </form>
+        <hr>
+        <form class="needs-validation p-3" id="addComment" action="/api/general/addComment" method="POST" dir="rtl"
+            novalidate>
 
-            <hr>
+            <div class="col-md-12 mb-3">
+                <label class="text-right col-12" for="textComment">متن نظر</label>
+                <textarea class="form-control textboxSite" id="textComment" name="text" rows="5"></textarea>
+            </div>
 
-            <div id="boxPost">
-                <label dir="rtl" class="col-12 text-center">نظر <%= comments.length%> </label>
-                <% for(let i=0; i < comments.length; i++){ %>
-                <div class="col-12 d-flex row justify-content-end ">
+            <input type="text" name="articleId" value="<%= article._id %>" hidden>
 
-                    <div class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
+            <button type="submit" id="btnSendComment" class="btnSite btnSiteBlue" disabled>ارسال نظر</button>
+        </form>
+
+        <hr>
+
+        <div id="boxPost">
+            <label dir="rtl" class="col-12 text-center">نظر <%= comments.length%> </label>
+            <% for(let i=0; i < comments.length; i++){ %>
+            <div class="col-12 d-flex row justify-content-end ">
+
+                <div class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
                         <label class="col-12 text-right"><%= comments[i].fullName %></label>
                         <label class=" col-12 text-right"><%= comments[i].text %></label>
-                    </div>
+                </div>
 
-                    <div class="containerImg">
+                <div class="containerImg">
 
-                        <img src="/images/avatar/<%= comments[i].userId %>.jpg" class="rounded-circle" height="50px"
-                            width="50px">
-                        <% if(isAdmin){%>
-                            <button id="<%= comments[i]._id %>" class="btnDeletePost">
-                                <i class="fa fa-trash"></i></button>
-                        <!-- <a href="/api/admin/deleteComment<%= comments[i]._id %>" class="btn"><i
+                    <img src="/images/avatar/<%= comments[i].userId %>.jpg" class="rounded-circle" height="50px"
+                        width="50px">
+                    <% if(isAdmin){%>
+                    <button id="<%= comments[i]._id %>" class="btnDeletePost">
+                        <i class="fa fa-trash"></i></button>
+                    <!-- <a href="/api/admin/deleteComment<%= comments[i]._id %>" class="btn"><i
                                 class="fa fa-trash"></i></a> -->
-                        <%}%>
+                    <%}%>
                     </div>
                 </div>
                 <% } %>
-            </div>
-
-
-
                 </div>
 
-                <div class="col-md-3 ">
-                    <div class="col-12 bg-success p-2">مقالات این نویسنده</div>
-                    <div class="cnlTasktContainer">
-                        <div class="cnlTaskTime">
-                            <div class="cnlTaskTimeScrol"></div>
-                        </div>
-                        <i id="closeTask" class="far fa-times-circle close"></i>
+
+
+            </div>
+
+            <div class="col-md-3 mt-3">
+                <div class="col-12 titrPnl p-2">مقالات این نویسنده
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div class="cnlTasktContainer">
+                    <div class="cnlTaskTime">
+                        <div class="cnlTaskTimeScrol"></div>
                     </div>
-
+                    <i id="closeTask" class="far fa-times-circle close"></i>
                 </div>
-            </div>
 
-            <!-- <div class="pieContainer">
+            </div>
+        </div>
+
+        <!-- <div class="pieContainer">
                 <div class="pieBackground"></div>
                 <div id="pieSlice2" class="hold">
                     <div class="pie"></div>
@@ -192,11 +199,15 @@
                 </div>
             </div> -->
 
-            <script src="/javascripts/jquery-3.4.1.js"></script>
-            <script src="/js/bootstrap.min.js"></script>
-            <script src="/javascripts/layout.js"></script>
-            <script src="/javascripts/article.js"></script>
 
+
+        <script src="/javascripts/jquery-3.4.1.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/javascripts/layout.js"></script>
+        <script src="/javascripts/article.js"></script>
+
+        
+    </div>
 </body>
 
 </html>

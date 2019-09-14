@@ -8,15 +8,15 @@
   <div class="articleImg col-3 p-3">
     <img id="imgArticle" src="/images/avatarArticle/<%= article[i].picPath %>" width="200px" alt="">
   </div>
-  <div class=" col-9 d-flex row">
+  <div class="col-9 d-flex row">
 
     <a id="articleTitle" dir="rtl" href="/api/general/article/<%= article[i]._id %>" style="font-size: 40px"
       class="col-12 text-right"><%= article[i].title %></a>
     <div class="d-flex justify-content-end col-12">
-      <label id="infoArticle" class="col-12 p-3 text-right">
-        <%= article[i].firstName +" "+ article[i].lastName %> | چهارشنبه بیست شهریور| <%= article[i].dateAt %>
+      <label id="infoArticle" class="col-12 p-0 text-right">
+        <%= article[i].firstName +" "+ article[i].lastName %> | <%= article[i].datePersian %> 
       </label>
-      <img src="/images/avatar/<%= article[i].idWriter %>.jpg" class="rounded-circle" width="50px" height="50px" alt="">
+      <!-- <img src="/images/avatar/<%= article[i].idWriter %>.jpg" class="rounded-circle" width="50px" height="50px" alt=""> -->
     </div>
     <label id="textSummary" dir="rtl" class="col-12 text-right"><%= article[i].text %></label>
 
@@ -25,6 +25,19 @@
 </div>
 
 <% }%>
-<div class="d-flex flex-row col-9 ">
+
+
+<!-- <div class="d-flex flex-row col-9 ">
   <a href=""></a>
-</div>
+</div> -->
+
+<div dir="rtl" class="d-flex justify-content-center row m-5">
+      <% let i=0,page=1;
+        while(i < numberArticl){%>
+        <div class="pageLink">
+          <a href="/api/allArticle/<%= page%>"><%= page %></a>
+        </div>
+      <% i = i + 5 
+    page++;
+    }%>
+  </div>

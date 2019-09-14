@@ -100,18 +100,20 @@ router.put('/addAdmin', (req, res) => {
 
 router.get('/allArticle/:page', (req, res, next) => {
 
-    let page = 5 * (--req.params.page)
+    let page = 5 * (--req.params.page);
+    let numberArticl;
 
     Article.find({}, async (err, article) => {
 
         for (let i = 0; i < article.length; i++) {
 
             article[i].text = article[i].text.slice(0, 250) + " ...";
-
+            
             let dt = new Date(article[i].dateCreate);
-
-            article[i].dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
-
+            
+            article[i].dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
+            article[i].datePersian = jalaliDate.persianDateLong(dt.getFullYear(), dt.getMonth() + 1, dt.getDate(), dt.getDay() );
+            
             await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1 }, (err, user) => {
 
                 if (err) res.json({ success: false, err })
@@ -120,10 +122,13 @@ router.get('/allArticle/:page', (req, res, next) => {
                 article[i].idWriter = user._id;
 
             })
+
+            numberArticl = await Article.find({}).count();
         }
         res.render('index', {
             article,
-            title: 'مقالستان'
+            numberArticl,
+            title: 'مقالات'
         }
         )
     })

@@ -58,24 +58,24 @@
 
             <div id="addArticle">
                 <div class="mainPanel col-md-12 p-0">
-                    <form dir="rtl" method="POST" action="/api/general/articleAdd" enctype="multipart/form-data">
-                        <div class="col-md-10 mb-3">
+                    <form dir="rtl" method="POST" class="d-flex flex-column align-items-center" action="/api/general/articleAdd" enctype="multipart/form-data">
+                        <div class="col-md-12 mb-5">
                             <label for="title" class="text-right col-12">عنوان مقاله</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="عنوان"
+                            <input type="text" class="form-control textboxSite" id="title" name="title" placeholder="عنوان"
                                 required>
                         </div>
 
-                        <div class="col-md-10 mb-3">
+                        <div class="col-md-12 mb-5">
                             <label class="text-right col-12" for="textArticle">متن مقاله</label>
-                            <textarea class="form-control" id="textArticle" name="text" rows="10"></textarea>
+                            <textarea class="form-control textboxSite" id="textArticle" name="text" rows="10"></textarea>
                         </div>
 
                         <input type="text" class="form-control" id="picPath" name="picPath" hidden>
 
-                        <input id="chooseImgAvatar" type="file" value="654" name="filePath" size="50" />
+                        <input id="chooseImgAvatar" type="file" value="654" class="btnSite btnSiteBlue" name="filePath" size="50" />
                         <br />
-
-                        <button type="submit" id="articleAdd">ارسال مقاله</button>
+                        <img id="imgArticle">
+                        <button type="submit" id="articleAdd" class="btnSite btnSiteBlue col-3">ارسال مقاله</button>
                     </form>
                 </div>
             </div>
@@ -88,36 +88,60 @@
                     <img id="avatarImg" src="/images/avatar/user.png" height="100%" width="100%">
                     <div class="addImg"><i style="font-size: 50px" class="fas fa-upload"></i></div>
                 </div>
-                <label class="mt-2 " id="fullName"></label>
-                <label class="mt-2 " id="phone"></label>
-                <label class="mt-2 " id="creatAt"></label>
-                <label class="mt-2 " id="LUpdate"></label>
+                <div dir="rtl">
+
+                    <i class="fas fa-user-tag colorIcon"></i>&nbsp;
+
+                    <label class="mt-2 text-white" id="fullName"></label>
+
+                </div>
+                <div dir="rtl">
+
+                    <i class="fas fa-phone colorIcon"></i>&nbsp;
+
+                    <label class="mt-2 text-white" id="phone"></label>
+
+                </div>
+                <div dir="rtl">
+
+                    <i class="fas fa-calendar-plus colorIcon"></i>&nbsp;
+
+                    <label class="mt-2 text-white" id="creatAt"></label>
+
+                </div>
+                <div dir="rtl">
+
+                    <i class="fas fa-calendar-week colorIcon"></i>&nbsp;
+
+                    <label class="mt-2 text-white" id="LUpdate"></label>
+
+                </div>
             </div>
 
             <div class="panelRight-bottom">
                 <a id="showFormUpdate" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
                     data-toggle="modal" data-target="#exampleModal">
                     ویرایش
-                    &nbsp;<i class="fas fa-user-edit"></i> </a>
-                <a id="showFormUpdate" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
-                    href="/api/allArticle/1">
-                    صفحه مقالات
-                    &nbsp;<i class="fas fa-user-edit"></i> </a>
+                    &nbsp;<i class="fas fa-user-edit colorIcon"></i> </a>
                 <% if(user.role == 'admin'){ %>
                 <a class="aMenu headUsers btn bg-transparent border-bottom rounded-0 col-md-12">
                     تنظیمات کاربران
-                    &nbsp;<i class="fas fa-user-cog"></i> </a>
+                    &nbsp;<i class="fas fa-user-cog colorIcon"></i> </a>
                 <%} %>
+                <a id="showFormUpdate" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
+                    href="/api/allArticle/1">
+                    صفحه مقالات
+                    &nbsp;&nbsp;<i class="fas fa-file colorIcon"></i>&nbsp; </a>
                 <a id="myArticles" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12"
                     href="/api/general/myArticle">
                     لیست مقالات خود
-                    &nbsp;<i class="fas fa-user-plus"></i> </a>
+                    &nbsp;&nbsp;<i class="fas fa-file-alt colorIcon">&nbsp;</i> </a>
                 <a id="articleInsertForm" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12">
                     افزودن مقاله
-                    &nbsp;<i class="fas fa-user-plus"></i> </a>
+                    &nbsp;&nbsp;<i class="fas fa-file-medical colorIcon"></i>&nbsp;</a>
                 <a id="logout" class="aMenu btn bg-transparent border-bottom rounded-0 col-md-12" href="/api/logout">
                     خروج
-                    &nbsp;<i class="fas fa-sign-out-alt"></i> </a>
+                    &nbsp;<i class="fas fa-sign-out-alt colorIcon"></i> </a>
             </div>
         </div>
     </div>
@@ -163,7 +187,7 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName" class="text-right col-12">نام</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                <input type="text" class="form-control textboxSite" id="firstName" name="firstName"
                                     placeholder="نام" required>
                                 <!-- <div class="valid-feedback">
                                             Looks good!
@@ -171,7 +195,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lastName" class="text-right col-12">نام خانوادگی</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                <input type="text" class="form-control textboxSite" id="lastName" name="lastName"
                                     placeholder="نام خانوادگی" required>
                                 <!-- <div class="valid-feedback">
                                             Looks good!
@@ -182,7 +206,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="phoneUpdate" class="text-right col-12">شماره تلفن</label>
-                                <input type="number" class="form-control" id="phoneUpdate" name="phoneUpdate"
+                                <input type="number" class="form-control textboxSite" id="phoneUpdate" name="phoneUpdate"
                                     placeholder="شماره تلفن" required>
                                 <!-- <div class="valid-feedback">
                                             Looks good!
@@ -190,22 +214,23 @@
                             </div>
 
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="gender" value="male" name="gender" class="custom-control-input"
-                                required>
-                            <label class="custom-control-label" for="gender">مرد</label>
+                        <div class="d-flex row justify-content-center col-12 text-center">
+                            <div class="custom-control custom-radio m-2">
+                                <input type="radio" id="gender" value="male" name="gender" class="custom-control-input"
+                                    required>
+                                <label class="custom-control-label" for="gender">مرد</label>
+                            </div>
+                            <div class="custom-control custom-radio m-2">
+                                <input type="radio" id="gender2" value="woman" name="gender" class="custom-control-input"
+                                    required>
+                                <label class="custom-control-label" for="gender2">زن</label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="gender2" value="woman" name="gender" class="custom-control-input"
-                                required>
-                            <label class="custom-control-label" for="gender2">زن</label>
-                        </div>
-
                         <div class="modal-footer justify-content-around p-2">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">لغو</button>
-                            <button type="button" id="update" class="btn btn-primary">اعمال تغیرات</button>
-                            <button type="button" id="deleteUser" class="btn btn-danger">حذف</button>
-                            <button type="button" id="rcoveryPass" class="btn btn-warning">بازیابی رمز عبور</button>
+                            <button type="button" class="btnSite btn-secondary" data-dismiss="modal">لغو</button>
+                            <button type="button" id="update" class="btnSite btn-primary">اعمال تغیرات</button>
+                            <button type="button" id="deleteUser" class="btnSite btn-danger">حذف</button>
+                            <button type="button" id="rcoveryPass" class="btnSite btn-warning">بازیابی رمز عبور</button>
                         </div>
                     </form>
                 </div>

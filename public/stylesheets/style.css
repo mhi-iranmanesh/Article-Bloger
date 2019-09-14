@@ -19,7 +19,7 @@ body {
 }
 
 #formLogin2 {
-  display: none!important;
+  display: none !important;
 }
 
 #articleTitle {
@@ -48,15 +48,33 @@ body {
   /* border: 3px solid #c8a9ed; */
 }
 
-.header {
-  background-image: linear-gradient(to bottom right, #006492 , #0086c4);
+.headerIndex {
+  background-image: linear-gradient(to bottom right, #006492, #0086c4);
   padding: 20px;
   box-shadow: 0px 0px 10px 0px #464646;
   position: fixed;
   z-index: 2;
-  top: 0;
+  top: -5px;
 }
 
+
+.header {
+  background-image: linear-gradient(to bottom right, #006492, #0086c4);
+  padding: 20px;
+  box-shadow: 0px 0px 10px 0px #464646;
+  position: fixed;
+  z-index: 2;
+  top: -30px;
+  left: 40%;
+  border-radius: 0 0 50% 50%;
+  width: 300px;
+  font-size: 20px;
+  transition: 0.1s;
+}
+
+.header:hover {
+  top: 0px;
+}
 
 .statusLoad {
   height: 2px;
@@ -67,17 +85,16 @@ body {
 .panelLogin {
   position: fixed;
   background-color: #fff;
-  margin-left: 150px;
-  width: 300px;
+  margin-left: 120px;
+  width: 200px;
   padding: 10px;
   z-index: 2;
-  border-top: 1px solid #a5a5a5;
-  box-shadow: 0px 0px 8px 1px rgb(196, 196, 196);
+  box-shadow: 0px 6px 8px 1px rgb(196, 196, 196);
   display: none;
-  top: 75px;
+  top: 70px;
 }
 
-#showInfo>a {
+#showInfo a {
   padding: 5px;
   background-color: red;
 }
@@ -94,15 +111,119 @@ body {
   color: #b10000;
 }
 
+.bckPic {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.bckPic img {
+  border-radius: 50%;
+}
+
+.titrPnl {
+  background-color: #836400;
+  border-radius: 2px;
+  margin-bottom: 5px;
+  text-align: right;
+  color: white;
+  font-size: 15px;
+}
+
+.mainArticle {
+  background-color: #fff;
+  margin: 10px 0;
+  text-align: right;
+}
+
+.mainArticle div{
+  padding: 5px;
+  margin: 5px;
+  width: 100%;
+  box-sizing: content-box;
+}
+
+
+.titrMostVisit {
+  color: #383838;
+  text-align: right !important;
+  text-decoration: none !important;
+}
+
+.titrMostVisit:hover {
+  color: #b10000;
+}
+
+.btnSite {
+  color: #fff;
+  font-size: 15px;
+  padding: 10px;
+  min-width: 100px;  margin: 5px 0;
+  border: 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.btnSiteBlue {
+  background-color: rgba(0, 149, 207, 0.829);
+}
+
+.textboxSite {
+  border: 0;
+  border-bottom: 3px solid rgba(0, 149, 207, 0.829);
+  border-radius: 0px;
+  background-color: transparent!important;
+  transition: 0.3s;
+}
+
+.textboxSite:hover {
+  border: 1px solid rgba(0, 149, 207, 0.829);
+  border-radius: 10px;
+  border-bottom: 3px solid rgba(0, 149, 207, 0.829);
+}
+
+.btnSite:hover {
+  background-color: rgba(0, 108, 151, 0.829);
+  box-shadow: 0 2px 5px 1px rgb(197, 197, 197);
+  border-radius: 10px;
+}
+
+.miniPnl {
+  text-decoration: none !important;
+}
+
+.miniPnl:hover {
+  color: white;
+  background-color: rgb(0, 111, 238);
+}
+
+.pageLink{
+  border-radius: 50%;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.pageLink:hover, .pageLink:hover a{
+  background-color: #0494d6;
+  color: white;
+}
+
+.pageLink a{
+  text-decoration: none;
+}
+
 /* ////////////////////////// CANCLE TASK /////////////////////////// */
 
-.cnlTasktContainer{
+.cnlTasktContainer {
   background-color: rgba(255, 185, 185, 0.637);
   width: 100px;
   position: fixed;
   right: -250px;
   bottom: -250px;
-  border-radius: 50% 50% 0 0 ;
+  border-radius: 50% 50% 0 0;
   color: #fff !important;
   transition: 0.2s;
   display: flex;
@@ -117,11 +238,11 @@ body {
 
 }
 
-.cnlTaskHeader{
+.cnlTaskHeader {
   color: #fff;
 }
 
-.cnlTaskTime{
+.cnlTaskTime {
   width: 100%;
   height: 5px;
   display: flex;
@@ -132,7 +253,7 @@ body {
   bottom: 0;
 }
 
-.cnlTaskTimeScrol{
+.cnlTaskTimeScrol {
   height: 100%;
   width: 0px;
   background-color: rgb(253, 200, 0);
@@ -151,8 +272,8 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 100%;
-  box-shadow: 0px 0px 8px rgba(0,0,0,0.5);
-} 
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
 
 .pie {
   transition: all 1s;
@@ -189,10 +310,11 @@ body {
   background-color: #444;
   border-radius: 100%;
   top: 15px;
-  left: 15px; 
-  box-shadow: 0px 0px 8px rgba(0,0,0,0.5) inset;
+  left: 15px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5) inset;
   color: white;
 }
+
 .innerCircle .content {
   position: absolute;
   display: block;

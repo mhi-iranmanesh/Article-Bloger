@@ -173,6 +173,15 @@ a {
 
 .panelRight-bottom a:hover {
   background-color: #8d4b00 !important;
+  color: white !important;
+}
+
+.colorIcon {
+  color: #ffddb7 !important;
+}
+
+.colorIcon:hover {
+  color: white !important;
 }
 
 .mainPanel {
@@ -181,6 +190,8 @@ a {
   border-radius: 2px;
   height: 500px;
   box-shadow: 0 0 10px 2px #464646;
+  padding: 20px !important;
+  height: auto;
 }
 
 #addArticle {
@@ -231,6 +242,42 @@ thead {
 
 .mainUsers {
   display: none;
+}
+
+
+.btnSite {
+  color: #fff;
+  font-size: 15px;
+  padding: 10px;
+  min-width: 100px;
+  margin: 5px 0;
+  border: 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.btnSiteBlue {
+  background-color: rgba(0, 149, 207, 0.829);
+}
+
+.textboxSite {
+  border: 0;
+  border-bottom: 3px solid rgba(0, 149, 207, 0.829);
+  border-radius: 0px;
+  background-color: transparent!important;
+  transition: 0.3s;
+}
+
+.textboxSite:hover {
+  border: 1px solid rgba(0, 149, 207, 0.829);
+  border-radius: 10px;
+  border-bottom: 3px solid rgba(0, 149, 207, 0.829);
+}
+
+.btnSite:hover {
+  background-color: rgba(0, 108, 151, 0.829);
+  box-shadow: 0 2px 5px 1px rgb(197, 197, 197);
+  border-radius: 10px;
 }
 
 /* .close {
