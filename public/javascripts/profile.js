@@ -1,6 +1,13 @@
 let idUsers;
 $(document).ready(function () {
 
+    String.prototype.toPersianDigits = function () {
+        var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return this.replace(/[0-9]/g, function (w) {
+            return id[+w]
+        });
+    }
+
     $('#chooseImg').change(() => {
         $('#sendFile').click();
     })
@@ -13,9 +20,9 @@ $(document).ready(function () {
         success: function (response) {
             // jalaliDate.gregorian_to_jalali(`${response.user.dateCreate}`.slice(0, 4), `${response.user.dateCreate}`.slice(5, 7), `${response.user.dateCreate}`.slice(7, 10));
             document.getElementById('fullName').innerHTML = `${response.user.firstName}  ${response.user.lastName}`;
-            document.getElementById("phone").innerHTML = `${response.user.phone}`;
-            document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10);
-            document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10);
+            document.getElementById("phone").innerHTML = `${response.user.phone}`.toPersianDigits();
+            document.getElementById("creatAt").innerHTML = `${response.user.dateCreate}`.slice(0, 10).toPersianDigits();
+            document.getElementById("LUpdate").innerHTML = `${response.user.lastUpdate}`.slice(0, 10).toPersianDigits();
             //uploadImg -----------------------------------------------------------------------------------------------------------
 
             let pathImg = `/images/avatar/${response.user._id}.jpg`
@@ -194,37 +201,6 @@ $(document).ready(function () {
         })
         $('#deleteUser').attr('data-dismiss', 'modal');
 
-    });
-
-    //insert user----------------------------------------------------------------------------------------------------------------------------------------------
-
-    $('#insertUserForm').click((e) => {
-        $('#password').css('display', 'none');
-        $('#confirmPassword').css('display', 'none');
-        $('#deleteUser').css('display', 'none');
-        $('#rcoveryPass').css('display', 'none');
-        $('#insertUser').css('display', 'block');
-        $('#update').css('display', 'none')
-
-    });
-
-
-    $('#insertUser').click(function (e) {
-        let data = {
-            firstName: $('#firstName').val(),
-            lastName: $('#lastName').val(),
-            phone: $('#phoneUpdate').val(),
-        }
-
-        $.ajax({
-            type: "put",
-            url: "./admin/addUser",
-            data,
-            success: function (response) {
-                updateTable();
-            }
-        });
-        $('#insertUser').attr('data-dismiss', 'modal');
     });
 
 
@@ -419,10 +395,10 @@ $(document).ready(function () {
                     cel1.innerHTML = element.firstName;
                     cel2.innerHTML = element.lastName;
                     cel3.innerHTML = element.userName;
-                    cel4.innerHTML = element.phone;
+                    cel4.innerHTML = element.phone.toPersianDigits();
                     cel5.innerHTML = element.gender;
-                    cel6.innerHTML = `${element.dateCreate}`.slice(0, 10);
-                    cel7.innerHTML = `${element.lastUpdate}`.slice(0, 10);
+                    cel6.innerHTML = `${element.dateCreate}`.slice(0, 10).toPersianDigits();
+                    cel7.innerHTML = `${element.lastUpdate}`.slice(0, 10).toPersianDigits();
                     // tbody.appendChild(row)
 
                     let rows = table.getElementsByTagName("tr");
@@ -447,7 +423,6 @@ $(document).ready(function () {
                 });
 
                 table.append(tbody)
-
             }
         });
     }

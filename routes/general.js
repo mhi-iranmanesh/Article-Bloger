@@ -28,7 +28,7 @@ router.get('/profile', (req, res, next) => {
 
 ////////////////////////////////////////////////////////GET INFO////////////////////////////////////////////////////////
 
-router.get('/getInfo', (req, res, next) => { 
+router.get('/getInfo', (req, res, next) => {
 
     let dt = new Date(req.user.dateCreate);
     req.user.dateCreate = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
@@ -36,7 +36,7 @@ router.get('/getInfo', (req, res, next) => {
     dt = new Date(req.user.lastUpdate);
     req.user.lastUpdate = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth(), dt.getDay());
 
-    res.json({ success: true, user: req.user }) 
+    res.json({ success: true, user: req.user })
 });
 
 ////////////////////////////////////////////////////////EDIT PROFILE////////////////////////////////////////////////////////
@@ -177,6 +177,8 @@ router.get('/myArticle', (req, res, next) => {
                 article[i].text = article[i].text.slice(0, 250) + " ...";
                 await User.findOne({ userName: article[i].userName }, { firstName: 1, lastName: 1 }, (err, user) => {
 
+                    let dt = new Date(article[i].dateCreate);
+                    article[i].datePersian = jalaliDate.persianDateLong(dt.getFullYear(), dt.getMonth() + 1, dt.getDate(), dt.getDay());
 
                     if (err) res.json({ success: false, err })
                     article[i].firstName = user.firstName;
@@ -210,11 +212,11 @@ router.get('/article/:id', (req, res, next) => {
                 article.firstName = user.firstName;
                 article.lastName = user.lastName;
                 article.idWriter = user._id;
-                
+
                 let dt = new Date(article.dateCreate);
-                
+
                 article.dateAt = jalaliDate.gregorian_to_jalali(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
-                article.datePersian = jalaliDate.persianDateLong(dt.getFullYear(), dt.getMonth() + 1, dt.getDate(), dt.getDay() );
+                article.datePersian = jalaliDate.persianDateLong(dt.getFullYear(), dt.getMonth() + 1, dt.getDate(), dt.getDay());
 
                 let Writer = {};
 
@@ -276,8 +278,8 @@ router.get('/articlesWriter', (req, res, next) => {
     // const { userName } = req.body;
     // console.log( userName )
 
-    article.find( {}, (err, article) => {
-        if(err) res.json({success: false, msg: "err", err})
+    article.find({}, (err, article) => {
+        if (err) res.json({ success: false, msg: "err", err })
         res.json({ success: true, article })
     });
     // article.find({ }, { picPath: 1, title: 1 }, (err, article) => {

@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    
+
+
     /*.................................................................................................................
     ................................................GET INFO..................................................................
     ..................................................................................................................*/
@@ -74,7 +77,7 @@ $(document).ready(function () {
     })();
 
 
-    $("#clickTest").click(function (e) { 
+    $("#clickTest").click(function (e) {
         showMsgBox('danger', "sldkjflskjflkj")
     });
 
@@ -97,11 +100,11 @@ $(document).ready(function () {
 
         } else if (typeMsg == "warning") {
 
-            $(divMain).addClass("msgWarning");            
+            $(divMain).addClass("msgWarning");
 
         } else if (typeMsg == "danger") {
-            
-            $(divMain).addClass("msgDanger");            
+
+            $(divMain).addClass("msgDanger");
 
         }
 

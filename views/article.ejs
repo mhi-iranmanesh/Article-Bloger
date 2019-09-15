@@ -19,7 +19,7 @@
         <a href="/api/allArticle/1">
             <i class="fas fa-address-card text-white"></i>
         </a>
-        <a href="/api/allArticle/1">
+        <a href="/profile">
             <i class="fas fa-file text-white"></i>
         </a>
         <a href="/api/logout">
@@ -99,8 +99,9 @@
             <hr>
 
             <div class="d-flex justify-content-end col-12">
-                <label id="infoArticle" class="col-12 p-3 text-right mt-2">
-                    <%= article.firstName +" "+ article.lastName %> | <%= article.datePersian %>
+                <label id="infoArticle" class="col-12 p-3 text-right mt-2 perNum">
+                    <%= article.firstName +" "+ article.lastName %> | <%= article.datePersian %> | <i
+                        class="fas fa-eye"></i> <%= article.visit %>
                 </label>
                 <img src="/images/avatar/<%= article.idWriter %>.jpg" class="rounded-circle" width="60px" height="60px"
                     alt="">
@@ -147,7 +148,7 @@
         <hr>
 
         <div id="boxPost">
-            <label dir="rtl" class="col-12 text-center">نظر <%= comments.length%> </label>
+            <label dir="rtl" class="col-12 text-center perNum"> <%= comments.length%> نظر</label>
             <% for(let i=0; i < comments.length; i++){ %>
             <div class="col-12 d-flex row justify-content-end ">
 
@@ -205,8 +206,10 @@
         <script src="/js/bootstrap.min.js"></script>
         <script src="/javascripts/layout.js"></script>
         <script src="/javascripts/article.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="/javascripts/persianNumber.js"></script>
 
-        
+
     </div>
 </body>
 

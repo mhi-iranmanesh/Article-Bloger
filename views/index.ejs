@@ -11,10 +11,10 @@
   <div class="col-9 d-flex row">
 
     <a id="articleTitle" dir="rtl" href="/api/general/article/<%= article[i]._id %>" style="font-size: 40px"
-      class="col-12 text-right"><%= article[i].title %></a>
+      class="col-12 text-right "><%= article[i].title %></a>
     <div class="d-flex justify-content-end col-12">
-      <label id="infoArticle" class="col-12 p-0 text-right">
-        <%= article[i].firstName +" "+ article[i].lastName %> | <%= article[i].datePersian %> 
+      <label id="infoArticle" class="perNum col-12 p-0 text-right">
+        <%= article[i].firstName +" "+ article[i].lastName %> | <%= article[i].datePersian %> | <i class="fas fa-eye"></i> <%= article[i].visit %>
       </label>
       <!-- <img src="/images/avatar/<%= article[i].idWriter %>.jpg" class="rounded-circle" width="50px" height="50px" alt=""> -->
     </div>
@@ -35,7 +35,7 @@
       <% let i=0,page=1;
         while(i < numberArticl){%>
         <div class="pageLink">
-          <a href="/api/allArticle/<%= page%>"><%= page %></a>
+          <a class="perNum" href="/api/allArticle/<%= page%>"><%= page %></a>
         </div>
       <% i = i + 5 
     page++;

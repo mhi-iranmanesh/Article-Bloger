@@ -4,14 +4,17 @@ const islogin = require('../config/auth').isLogin;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'مقالستان' });
+  res.render('home', { title: 'مقالستان' });
 });
 
 /* GET profile. */
 
 router.get('/profile', islogin, (req, res ,next) => {
-  res.render('profile');
-  console.log(req.user)
+  res.render('profile', {
+    title: `پروفایل ${req.user.firstName} ${req.user.lastName}`,
+    user: req.user,
+    layout: false
+})
 });
 
 module.exports = router;
