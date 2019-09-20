@@ -16,11 +16,11 @@
     <% include ./partials/messages  %>
 
     <div class="header mx-auto text-secondary row d-flex justify-content-around ">
-        <a href="/api/allArticle/1">
-            <i class="fas fa-address-card text-white"></i>
+        <a href="/">
+            <i class="fas fa-home text-white"></i>
         </a>
         <a href="/profile">
-            <i class="fas fa-file text-white"></i>
+            <i class="fas fa-address-card text-white"></i>
         </a>
         <a href="/api/logout">
             <i class="fas fa-sign-out-alt text-white"></i>
@@ -58,7 +58,7 @@
         </div> -->
 
     <div class="col-md-12 d-flex  justify-content-center">
-        <div class="col-md-3 mt-3">
+        <div class="col-md-2 mt-3">
             <%if (Writer.isWriter || isAdmin){%>
             <div class="bckPic col-md-12 d-flex flex-column align-items-center ">
                 <!-- <div class="containerImg"> -->
@@ -69,8 +69,12 @@
 
                 <%if (Writer.isWriter){%>
 
-                <button class="btn" id="btn_deleteArticle">پاک کردن مقاله </button>
-                <button class="btn" id="btn_editArticle">ویرایش مقاله </button>
+                <button class="btn" id="btn_deleteArticle">پاک کردن مقاله &nbsp;
+                    <i style="font-size: 20px; color:rgb(187, 0, 0)" class="fa fa-trash"></i>
+                </button>
+                <button class="btn" id="btn_editArticle">ویرایش مقاله &nbsp;
+                    <i style="font-size: 20px; color:rgb(187, 0, 0)" class="fas fa-backspace"></i>
+                </button>
 
                 <% }else { %>
 
@@ -147,12 +151,12 @@
 
         <hr>
 
-        <div id="boxPost">
+        <div id="boxPost" >
             <label dir="rtl" class="col-12 text-center perNum"> <%= comments.length%> نظر</label>
             <% for(let i=0; i < comments.length; i++){ %>
             <div class="col-12 d-flex row justify-content-end ">
 
-                <div class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
+                <div dir="rtl" class="bg-white rounded m-2 p-2 <% if(isAdmin){%> col-8 <%} else{%> col-10 <%}%>">
                         <label class="col-12 text-right"><%= comments[i].fullName %></label>
                         <label class=" col-12 text-right"><%= comments[i].text %></label>
                 </div>

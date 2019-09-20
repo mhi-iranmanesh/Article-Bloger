@@ -204,15 +204,17 @@ body {
   height: 20px;
   margin: 10px;
   cursor: pointer;
-  transition: 0.2s;
-}
-.pageLink:hover, .pageLink:hover a{
-  background-color: #0494d6;
-  color: white;
+  transition: 0.1s;
+  text-decoration: none;
 }
 
-.pageLink a{
-  text-decoration: none;
+.pageLink:hover{
+  background-color: #0494d6;
+  color: white;
+  margin-top: 7px;
+  padding: 4px;
+  width: 30px;
+  height: 30px;
 }
 
 /* ////////////////////////// CANCLE TASK /////////////////////////// */

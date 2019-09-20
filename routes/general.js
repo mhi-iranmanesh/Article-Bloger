@@ -324,9 +324,9 @@ router.get('/getComments', (req, res, next) => {
 
     const { articleId } = req.body;
 
-    CommentArt.find({ articleId }, (req, res, next) => {
+    CommentArt.find({ articleId }, (err, comments) => {
 
-        res.json({})
+        res.json({comments})
 
     });
 

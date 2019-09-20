@@ -26,7 +26,14 @@ $(document).ready(function () {
             //uploadImg -----------------------------------------------------------------------------------------------------------
 
             let pathImg = `/images/avatar/${response.user._id}.jpg`
-            $('#avatarImg').attr('src', pathImg);
+
+            $.ajax({
+                type: "Get",
+                url: pathImg,
+                success: function (response) {
+                    $('#avatarImg').attr('src', pathImg);
+                }
+            });
 
             $('.containerImg').click((e) => {
                 $('#chooseImg').click();

@@ -6,7 +6,7 @@ const Article = require('../models/article');
 
 const { isLogin } = require('../config/auth');
 const { routeController } = require('../config/ac');
-const jalaliDate = require('../tools/jalaliDate')
+const jalaliDate = require('../tools/jalaliDate');
 
 const user = require('./user');
 const admin = require('./admin');

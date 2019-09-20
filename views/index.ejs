@@ -34,9 +34,7 @@
 <div dir="rtl" class="d-flex justify-content-center row m-5">
       <% let i=0,page=1;
         while(i < numberArticl){%>
-        <div class="pageLink">
-          <a class="perNum" href="/api/allArticle/<%= page%>"><%= page %></a>
-        </div>
+          <a class="perNum pageLink" href="/api/allArticle/<%= page%>"><%= page %></a>
       <% i = i + 5 
     page++;
     }%>
